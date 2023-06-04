@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="test-update.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        async function main() {
+            const root = document.getElementById('root');
+            const user = await get_detail(24);
+            console.log(user);
+            let infor =
+                `<div>
+                    <label>First Name: </label>
+                    <input value="${user.firstName}" id="user_firstName_${user.id}">
+                </div>
+                <div>
+                    <label>Last Name: </label>
+                    <input value="${user.lastName}" id="user_lastName_${user.id}">
+                </div>
+                <div>
+                    <label>Email: </label>
+                    <input value="${user.email}" id="user_email_${user.id}">
+                </div>
+                <div>
+                    <label>Address: </label>
+                    <input value="${user.address}" id="user_address_${user.id}">
+                </div>
+                <input hidden value="${user.id}" id="user_${user.id}">
+                <button onclick="update(${user.id})">Update user</button>`
+
+            document.getElementById("root").innerHTML = infor;
+        }
+        main()
+    </script>
+
+</body>
+
+</html>

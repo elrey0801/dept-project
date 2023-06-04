@@ -1,0 +1,45 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trăn khìn</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="/">Home</a>
+        <a class="active" href="/upload">Upload File</a>
+    </div>
+
+    <h1>Trăn khìn</h1>
+
+    <div class="upload-file-container">
+        <form action="/upload-profile-pic" method="POST" enctype="multipart/form-data">
+            <div>
+                <label>Upload single picture:</label>
+                <input type="file" name="profile_pic">
+            </div>
+            <div>
+                <button type="submit" class="button-save">Save</button>
+            </div>
+        </form>
+
+        <form action="/upload-multi-pic" method="POST" enctype="multipart/form-data">
+            <div>
+                <label>Upload multiple pictures:</label>
+                <input type="file" name="multi_pic" multiple>
+            </div>
+            <div>
+                <button type="submit" class="button-save">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <img src="/img/tran.jpg" width="50%" class="center" />
+</body>
+
+</html>

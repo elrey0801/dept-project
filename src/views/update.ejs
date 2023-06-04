@@ -1,0 +1,46 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Update User</title>
+</head>
+
+<body>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="/upload">Upload File</a>
+    </div>
+    <div class="create-user-container">
+        <form action="/edit-user" method="POST">
+            <div><b>Update User: </b></div>
+            <div>
+                <label>First Name: </label>
+                <input value="<%=dataUser.firstName %>" name="firstName">
+            </div>
+            <div>
+                <label>Last Name: </label>
+                <input value="<%=dataUser.lastName %>" name="lastName">
+            </div>
+            <div>
+                <label>Email: </label>
+                <input value="<%=dataUser.email %>" name="email">
+            </div>
+            <div>
+                <label>Address: </label>
+                <input value="<%=dataUser.address %>" name="address">
+            </div>
+            <div>
+                <input hidden value="<%=dataUser.id %>" name="id">
+            </div>
+            <div>
+                <button type="submit" class="btn-submit">Save</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
