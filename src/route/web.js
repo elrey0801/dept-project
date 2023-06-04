@@ -69,8 +69,8 @@ const initWebRoute = (app) => {
         try {
             console.log(req.body.password);
             const hashedPass = await bcrypt.hash(req.body.password, 10);
-            await pool.execute(`INSERT INTO account(username, email, password) 
-                        VALUES(?, ?, ?)`, [req.body.name, req.body.email, hashedPass]);
+            await pool.execute(`INSERT INTO users(username, password) 
+                        VALUES(?, ?)`, [req.body.username, hashedPass]);
             res.redirect('/login');
         }
         catch (e) {

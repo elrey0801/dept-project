@@ -32,12 +32,12 @@ initializePassport(
     passport,
 
     // have to modify to get data from DB
-    async function getEmail(email) {
-        const [user, fields] = await pool.execute('SELECT * FROM `account` WHERE email = ?', [email]);
+    async function getUserName(username) {
+        const [user, fields] = await pool.execute('SELECT * FROM `users` WHERE username = ?', [username]);
         return user;
     },
     async function getId(id) {
-        return await pool.execute('SELECT * FROM `account` WHERE id = ?', [id]);
+        return await pool.execute('SELECT * FROM `users` WHERE id = ?', [id]);
     }
 );
 
