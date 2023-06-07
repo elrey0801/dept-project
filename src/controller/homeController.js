@@ -8,6 +8,27 @@ let getHomepage = async (req, res) => {
     return res.render('index.ejs', { results: rows });
 }
 
+let getCreateGroupDetail = async (req, res) => {
+    const userId = await req.user;
+    const username = userId[0][0].username;
+    const date = new Date();
+    const groupId = username + '_' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-'
+        + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
+
+    console.log(date.getFullYear());
+    console.log(req.body)
+    return res.render('create-group.ejs', { userId: username, groupId: groupId });
+}
+
+let createGroup = async (req, res) => {
+
+    console.log(req.body)
+    //'2023-06-02 14:17:15'
+    // await pool.execute(`INSERT INTO users(firstName, lastName, email, address) 
+    //                     VALUES(?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, req.body.address]);
+    return res.render('create-group.ejs');
+}
+
 let getDetailPage = async (req, res) => {
     let userId = req.params.userId;
     const [user, fields] = await pool.execute(`SELECT * FROM users WHERE id = ?`, [userId]);
@@ -100,5 +121,6 @@ let runPython = (req, res) => {
 }
 
 module.exports = {
-    getHomepage, getDetailPage, createNewUser, deleteUser, editUserView, editUser, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython,
+    getHomepage, getDetailPage, createNewUser, deleteUser, editUserView, editUser, getUploadFilePage,
+    handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail, createGroup
 }

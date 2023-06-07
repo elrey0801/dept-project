@@ -70,6 +70,23 @@ let deleteUser = async (req, res) => {
     })
 }
 
+
+
+let createNewGroup = async (req, res) => {
+
+    if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.address)
+        return res.status(200).json({
+            message: 'missing params',
+        })
+
+    await pool.execute(`INSERT INTO users(firstName, lastName, email, address) 
+                        VALUES(?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, req.body.address]);
+
+    return res.status(200).json({
+        message: 'ok',
+    })
+}
+
 module.exports = {
-    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser,
+    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createNewGroup,
 }

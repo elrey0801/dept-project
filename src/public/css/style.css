@@ -60,3 +60,18 @@ body {
 .upload-file-container label {
     display: block;
 }
+
+
+
+/* create 2 columns layout */
+.column {
+    float: left;
+    width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
