@@ -72,21 +72,37 @@ let deleteUser = async (req, res) => {
 
 
 
-let createNewGroup = async (req, res) => {
+let createGroup = async (req, res) => {
+    const username = req.body.username;
+    console.log(req.body)
+    let schedule_start = req.body.schedule_start
+    let schedule_finish = req.body.schedule_finish
+    schedule_start = schedule_start.split('T')
+    schedule_start[1] = schedule_start[1] + ':00'
+    schedule_start = schedule_start.join(' ')
 
-    if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.address)
-        return res.status(200).json({
-            message: 'missing params',
-        })
+    schedule_finish = schedule_finish.split('T')
+    schedule_finish[1] = schedule_finish[1] + ':00'
+    schedule_finish = schedule_finish.join(' ')
 
-    await pool.execute(`INSERT INTO users(firstName, lastName, email, address) 
-                        VALUES(?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, req.body.address]);
+    console.log(schedule_start, schedule_finish)
 
+    const hidden_id = username + '_' + Date.now()
+    console.log(hidden_id)
+    await pool.execute('INSERT INTO `list-ct`(hidden_id, group_id, schedule_start, schedule_finish, crew, content, element, station, ptt) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [hidden_id, req.body.group_id, req.body.schedule_start, req.body.schedule_finish, req.body.crew, req.body.content, req.body.element, req.body.station, req.body.ptt]);
+
+    await pool.execute('INSERT INTO `ct-permission`(username, id_ct) VALUES(?, ?)', [username, hidden_id]);
+    // return res.render('create-group-detail.ejs', { userId: username, groupId: req.body.group_id });
     return res.status(200).json({
         message: 'ok',
     })
 }
 
+let getCreateGroupDetail = async (req, res) => {
+
+}
+
 module.exports = {
-    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createNewGroup,
+    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createGroup, getCreateGroupDetail,
 }

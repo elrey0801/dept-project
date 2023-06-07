@@ -37,7 +37,7 @@ let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter });
 const initWebRoute = (app) => {
     router.get('/', checkAuthenticated, homeController.getHomepage);
     router.get('/create-group-detail', checkAuthenticated, homeController.getCreateGroupDetail);
-    router.post('/create-group', homeController.createGroup);
+    //router.post('/create-group-detail', homeController.createGroup);
     router.get('/python', homeController.runPython);
     router.get('/detail/user/:userId', checkAuthenticated, homeController.getDetailPage);
     router.post('/create-new-user', homeController.createNewUser);
@@ -108,3 +108,6 @@ function checkNotAuthenticated(req, res, next) {
 }
 
 export default initWebRoute;
+// module.exports = {
+//     checkAuthenticated
+// }

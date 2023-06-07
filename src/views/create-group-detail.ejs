@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trăn khìn</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+
+<body>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="/upload">Upload File</a>
+    </div>
+    <form action="/logout?_method=DELETE" method="POST">
+        <button type="submit">Log Out</button>
+    </form>
+
+    <h1>Group Detail - hello
+        <span id="username">
+            <%=userId %>
+        </span>
+    </h1>
+    <div class="create-user-container">
+        <form action="/create-group-detail" method="POST">
+            <div><b>Tạo group công tác: </b></div>
+            <div>
+                <label>Group ID: </label>
+                <input id="group_id" type="text" name="group_id" value=<%=groupId %> style='width:15%;' readonly="true">
+            </div>
+            <div>
+                <div style="display:inline-block; padding-right: 2%">
+                    <label>Thời gian dự kiến bắt đầu: </label>
+                    <input type="datetime-local" name="schedule_start" id="schedule_start" required>
+                </div>
+                <div style="display:inline-block; padding-right: 2%">
+                    <label>Thời gian dự kiến kết thúc: </label>
+                    <input type="datetime-local" name="schedule_finish" id="schedule_finish" required>
+                </div>
+            </div>
+            <div>
+                <label>Đơn vị: </label>
+                <input type="text" id="crew" name="crew" required style='width:15%;'>
+            </div>
+            <div>
+                <label>Trạm/NM: </label>
+                <input type="text" id="station" name="station" required style='width:15%;'>
+            </div>
+            <div>
+                <label>Phần tử công tác: </label>
+                <textarea type="text" id="element" name="element" wrap="soft"
+                    style='width:20%; height:10%; word-break: break-word' required></textarea>
+            </div>
+            <div>
+                <label>Nội dung công tác: </label>
+                <textarea type="text" id="content" name="content" wrap="soft"
+                    style='width:20%; height:10%; word-break: break-word' required></textarea>
+            </div>
+            <div>
+                <label>PTT: </label>
+                <input type="text" id="ptt" name="ptt" required style='width:15%;'>
+            </div>
+            <div>
+                <button id="create-button">Save</button>
+                <script src="/api/create-group-deital.js"></script>
+                <button id="resetBtn" onclick="resetBtn()">Reset</button>
+                <script>
+                    function resetBtn() {
+                        document.getElementById('schedule_start').value = '';
+                        document.getElementById('schedule_finish').value = '';
+                        document.getElementById('crew').value = '';
+                        document.getElementById('content').value = '';
+                        document.getElementById('element').value = '';
+                        document.getElementById('station').value = '';
+                        document.getElementById('ptt').value = '';
+                        document.getElementById('group_id').value = '';
+                    }
+                </script>
+            </div>
+        </form>
+    </div>
+    <img src="/img/tran.jpg" width="50%" class="center" />
+</body>
+
+</html>

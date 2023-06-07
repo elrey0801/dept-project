@@ -1,6 +1,7 @@
 import pool from "../configs/connectDB";
 
 
+
 let getHomepage = async (req, res) => {
 
     const [rows, fields] = await pool.execute('SELECT * FROM `users`');
@@ -11,23 +12,37 @@ let getHomepage = async (req, res) => {
 let getCreateGroupDetail = async (req, res) => {
     const userId = await req.user;
     const username = userId[0][0].username;
-    const date = new Date();
+    let date = new Date();
     const groupId = username + '_' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-'
         + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
 
-    console.log(date.getFullYear());
-    console.log(req.body)
-    return res.render('create-group.ejs', { userId: username, groupId: groupId });
+    return res.render('create-group-detail.ejs', { userId: username, groupId: groupId });
 }
 
-let createGroup = async (req, res) => {
+// let createGroup = async (req, res) => {
+//     const userId = await req.user;
+//     const username = userId[0][0].username;
+//     console.log(req.body)
+//     let schedule_start = req.body.schedule_start
+//     let schedule_finish = req.body.schedule_finish
+//     schedule_start = schedule_start.split('T')
+//     schedule_start[1] = schedule_start[1] + ':00'
+//     schedule_start = schedule_start.join(' ')
 
-    console.log(req.body)
-    //'2023-06-02 14:17:15'
-    // await pool.execute(`INSERT INTO users(firstName, lastName, email, address) 
-    //                     VALUES(?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, req.body.address]);
-    return res.render('create-group.ejs');
-}
+//     schedule_finish = schedule_finish.split('T')
+//     schedule_finish[1] = schedule_finish[1] + ':00'
+//     schedule_finish = schedule_finish.join(' ')
+
+//     console.log(schedule_start, schedule_finish)
+
+//     const hidden_id = username + '_' + Date.now()
+//     console.log(hidden_id)
+//     await pool.execute('INSERT INTO `list-ct`(hidden_id, group_id, schedule_start, schedule_finish, crew, content, element, station, ptt) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+//         [hidden_id, req.body.group_id, req.body.schedule_start, req.body.schedule_finish, req.body.crew, req.body.content, req.body.element, req.body.station, req.body.ptt]);
+
+//     await pool.execute('INSERT INTO `ct-permission`(username, id_ct) VALUES(?, ?)', [username, hidden_id]);
+//     // return res.render('create-group-detail.ejs', { userId: username, groupId: req.body.group_id });
+// }
 
 let getDetailPage = async (req, res) => {
     let userId = req.params.userId;
@@ -122,5 +137,5 @@ let runPython = (req, res) => {
 
 module.exports = {
     getHomepage, getDetailPage, createNewUser, deleteUser, editUserView, editUser, getUploadFilePage,
-    handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail, createGroup
+    handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail
 }
