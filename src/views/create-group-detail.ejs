@@ -25,7 +25,7 @@
 
     <h1>Group Detail</h1>
     <div class="create-group-container">
-        <form action="/create-group-detail" method="POST">
+        <form id="create-group-detail-form" action="/create-group-detail" method="POST">
             <div><b>Thêm công tác: </b></div>
             <div>
                 <label>Group ID: </label>
@@ -63,11 +63,9 @@
                 <label>PTT: </label>
                 <input type="text" id="ptt" name="ptt" required style='width:15%;'>
             </div>
-            <div>
-                <button id="create-button" class="button">Save</button>
-                <script src="/api/create-group-deital.js"></script>
-                <input type="reset" value="Reset" class="button" />
+            <div id="form-btn" style="margin-top: .5rem;">
             </div>
+            <script src="/api/create-group-deital.js"></script>
         </form>
     </div>
 

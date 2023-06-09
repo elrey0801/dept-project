@@ -93,7 +93,6 @@ let createGroup = async (req, res) => {
         [hidden_id, req.body.group_id, req.body.schedule_start, req.body.schedule_finish, req.body.crew, req.body.content, req.body.element, req.body.station, req.body.ptt]);
 
     await pool.execute('INSERT INTO `ct-permission`(username, id_ct) VALUES(?, ?)', [username, hidden_id]);
-    // return res.render('create-group-detail.ejs', { userId: username, groupId: req.body.group_id });
     return res.status(200).json({
         message: 'ok',
     })
@@ -112,6 +111,24 @@ let updateSingle = async (req, res) => {
 }
 
 let deleteSingle = async (req, res) => {
+    let hidden_id = req.params.hidden_id;
+    console.log(hidden_id);
+    if (!hidden_id)
+        return res.status(200).json({
+            message: 'missing params',
+        })
+
+    let [result, fields] = await pool.execute('SELECT * FROM `list-ct` WHERE hidden_id = ?', [hidden_id]);
+    if (result.length == 0)
+        return res.status(200).json({
+            message: 'hidden_id ' + hidden_id + ' does not exist',
+        })
+
+    await pool.execute('DELETE FROM `list-ct` WHERE hidden_id = ?', [hidden_id]);
+
+    return res.status(200).json({
+        message: 'ok',
+    })
 }
 module.exports = {
     getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createGroup, getGroupDetail, updateSingle, deleteSingle,

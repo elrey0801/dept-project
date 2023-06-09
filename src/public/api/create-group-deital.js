@@ -1,3 +1,22 @@
+function save_update_button(btn_type, hidden_id = 0) {
+    let tag;
+    if (btn_type == 1) {
+        tag = `
+        <button id = "create-button" class="button">Save</button>
+        <input type="reset" value="Reset" class="button" />`
+    } else {
+        tag = `
+        <button id = "update-button" class="button" onclick="updateElemnent(${hidden_id})">Update</button>
+        <input type="reset" value="Reset" class="button" />`
+    }
+    document.getElementById("form-btn").innerHTML = tag;
+
+    function updateElemnent(hidden_id) {
+
+    }
+}
+save_update_button(1);
+
 const createButton = document.getElementById('create-button');
 createButton.onclick = createGroup;
 function createGroup(event) {
@@ -48,22 +67,22 @@ async function displayScheduleTable() {
     let data = await get_detail(group_id);
     console.log(data);
     let table = `
-    <h2>Group List</h2>
-        <table border="1" width="100%" class="w3-table-all w3-hoverable">
-            <thead>
-                <tr class="w3-light-grey">
-                    <th style="width:9%">Bắt đầu</th>
-                    <th style="width:9%">Kết thúc</th>
-                    <th style="width:9%">Đơn vị</th>
-                    <th style="width:9%">Trạm/NM</th>
-                    <th>Phần tử</th>
-                    <th>Nội dung</th>
-                    <th style="width:9%">PTT</th>
-                    <th style="width:9%">Edit/Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-        `
+            <h2> Group List</h2>
+                <table border="1" width="100%" class="w3-table-all w3-hoverable">
+                    <thead>
+                        <tr class="w3-light-grey">
+                            <th style="width:9%">Bắt đầu</th>
+                            <th style="width:9%">Kết thúc</th>
+                            <th style="width:9%">Đơn vị</th>
+                            <th style="width:9%">Trạm/NM</th>
+                            <th>Phần tử</th>
+                            <th>Nội dung</th>
+                            <th style="width:9%">PTT</th>
+                            <th style="width:9%">Edit/Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        `
     if (data.length > 0) {
         for (let row of data) {
             var hidden_id = row.hidden_id;
@@ -81,31 +100,36 @@ async function displayScheduleTable() {
                     ':' + schedule_finish.getMinutes();
             }
             table += `<tr>
-            <td>${schedule_start} </td>
-            <td>${schedule_finish}</td>
-            <td>${row.crew}</td>       
-            <td>${row.station}</td> 
-            <td>${row.element.replaceAll("\n", "<br/>")}</td>
-            <td style="text-align: left;">${row.content.replaceAll("\n", "<br/>")}</td>
-            <td>${row.ptt}</td>  
-            <td>
-                <button id="edit-button-${hidden_id}" class="button" onclick="editEle('${hidden_id}')">Edit</button>
-                <button id="delete-button-${hidden_id}" class="button" onclick="deleteEle('${hidden_id}')">Delete</button>
-            </td>  
-        </tr>`;
+                            <td>${schedule_start} </td>
+                            <td>${schedule_finish}</td>
+                            <td>${row.crew}</td>
+                            <td>${row.station}</td>
+                            <td>${row.element.replaceAll("\n", "<br/>")}</td>
+                            <td style="text-align: left;">${row.content.replaceAll("\n", "<br/>")}</td>
+                            <td>${row.ptt}</td>
+                            <td>
+                                <div style="width: 100%;" class="div-table">
+                                    <button id="edit-button-${hidden_id}" class="button-table" onclick="preEditEle('${hidden_id}')">Edit</button>
+                                    <button id="delete-button-${hidden_id}" class="button-table" onclick="deleteEle('${hidden_id}')">Delete</button>
+                                </div>
+                            </td>
+                        </tr>`;
         }
     }
 
     table += `</tbody>
-    </table>`
+                </table>`
     document.getElementById("list-ct-container").innerHTML = table;
 }
 document.addEventListener('DOMContentLoaded', displayScheduleTable);
 
-function editEle(hidden_id) {
-    console.log('editing' + hidden_id);
+function preEditEle(hidden_id) {
+    document.getElementById("create-group-detail-form").reset();
+    save_update_button(2, hidden_id)
 }
 
-function deleteEle(hidden_id) {
+async function deleteEle(hidden_id) {
     console.log('deleting' + hidden_id);
+    await fetch('http://192.168.1.17:8888/api/v1/delete-single/' + hidden_id, { method: 'DELETE' }).then(res => res.text()).then(res => console.log(res));
+    displayScheduleTable();
 }
