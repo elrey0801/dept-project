@@ -94,7 +94,7 @@ let createGroup = async (req, res) => {
 
     await pool.execute('INSERT INTO `ct-permission`(username, id_ct) VALUES(?, ?)', [username, hidden_id]);
     return res.status(200).json({
-        message: 'ok',
+        message: 'createGroup ok',
     })
 }
 
@@ -102,12 +102,43 @@ let getGroupDetail = async (req, res) => {
     let group_id = req.params.group_id;
     let [result, field] = await pool.execute('SELECT * FROM `list-ct` WHERE group_id = ?', [group_id]);
     return res.status(200).json({
-        message: 'ok',
+        message: 'getGroupDetail ok',
+        result: result,
+    })
+}
+
+let getSingleDetail = async (req, res) => {
+    let hidden_id = req.params.hidden_id;
+    let [result, field] = await pool.execute('SELECT * FROM `list-ct` WHERE hidden_id = ?', [hidden_id]);
+    return res.status(200).json({
+        message: 'getSingleDetail ok',
         result: result,
     })
 }
 
 let updateSingle = async (req, res) => {
+    let hidden_id = req.body.hidden_id;
+    let schedule_start = req.body.schedule_start
+    let schedule_finish = req.body.schedule_finish
+    schedule_start = schedule_start.split('T')
+    schedule_start[1] = schedule_start[1] + ':00'
+    schedule_start = schedule_start.join(' ')
+
+    schedule_finish = schedule_finish.split('T')
+    schedule_finish[1] = schedule_finish[1] + ':00'
+    schedule_finish = schedule_finish.join(' ')
+
+    if (!hidden_id)
+        return res.status(200).json({
+            message: 'missing params update method',
+        })
+
+    await pool.execute('UPDATE `list-ct` SET schedule_start = ?, schedule_finish = ?, crew = ?, station = ?, element = ?, content = ?, ptt = ? WHERE hidden_id = ?',
+        [schedule_start, schedule_finish, req.body.crew, req.body.station, req.body.element, req.body.content, req.body.ptt, hidden_id]);
+
+    return res.status(200).json({
+        message: 'update ok',
+    })
 }
 
 let deleteSingle = async (req, res) => {
@@ -127,9 +158,9 @@ let deleteSingle = async (req, res) => {
     await pool.execute('DELETE FROM `list-ct` WHERE hidden_id = ?', [hidden_id]);
 
     return res.status(200).json({
-        message: 'ok',
+        message: 'delete ok',
     })
 }
 module.exports = {
-    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createGroup, getGroupDetail, updateSingle, deleteSingle,
+    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail,
 }

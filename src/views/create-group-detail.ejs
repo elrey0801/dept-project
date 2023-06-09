@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Trăn khìn</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/w3.css">
@@ -34,38 +35,38 @@
             <div>
                 <div style="display:inline-block; padding-right: 2%">
                     <label>Thời gian dự kiến bắt đầu: </label>
-                    <input type="datetime-local" name="schedule_start" id="schedule_start" required>
+                    <input type="datetime-local" name="schedule_start" id="schedule_start">
                 </div>
                 <div style="display:inline-block; padding-right: 2%">
                     <label>Thời gian dự kiến kết thúc: </label>
-                    <input type="datetime-local" name="schedule_finish" id="schedule_finish" required>
+                    <input type="datetime-local" name="schedule_finish" id="schedule_finish">
                 </div>
             </div>
             <div>
                 <label>Đơn vị: </label>
-                <input type="text" id="crew" name="crew" required style='width:15%;'>
+                <input type="text" id="crew" name="crew" style='width:15%;'>
             </div>
             <div>
                 <label>Trạm/NM: </label>
-                <input type="text" id="station" name="station" required style='width:15%;'>
+                <input type="text" id="station" name="station" style='width:15%;'>
             </div>
             <div>
                 <label>Phần tử công tác: </label>
                 <textarea type="text" id="element" name="element" wrap="soft"
-                    style='width:25rem; height:7rem; word-break: break-word' required></textarea>
+                    style='width:25rem; height:7rem; word-break: break-word'></textarea>
             </div>
             <div>
                 <label>Nội dung công tác: </label>
                 <textarea type="text" id="content" name="content" wrap="soft"
-                    style='width:25rem; height:7rem; word-break: break-word' required></textarea>
+                    style='width:25rem; height:7rem; word-break: break-word'></textarea>
             </div>
             <div>
                 <label>PTT: </label>
-                <input type="text" id="ptt" name="ptt" required style='width:15%;'>
+                <input type="text" id="ptt" name="ptt" style='width:15%;'>
             </div>
             <div id="form-btn" style="margin-top: .5rem;">
             </div>
-            <script src="/api/create-group-deital.js"></script>
+            <script src="/api/create-group-detail.js"></script>
         </form>
     </div>
 
