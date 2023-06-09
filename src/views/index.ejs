@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,14 +12,16 @@
 
 <body>
     <div class="topnav">
-        <a class="active" href="/">Home</a>
+        <a href="/" class="active">Home</a>
         <a href="/create-group-detail">Tạo nhóm công tác</a>
         <a href="/upload">Upload File</a>
+        <form action="/logout?_method=DELETE" method="POST">
+            <button type="submit" class="logout-button" style="float: right;">Log Out</button>
+        </form>
+        <a href="#" id="username" style="float: right;" class="userdisplay">
+            <%=userId %>
+        </a>
     </div>
-    <form action="/logout?_method=DELETE" method="POST">
-        <button type="submit">Log Out</button>
-    </form>
-
     <h1>Trăn khìn</h1>
     <div class="create-user-container">
         <form action="/create-new-user" method="POST">

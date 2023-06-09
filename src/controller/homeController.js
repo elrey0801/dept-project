@@ -3,10 +3,11 @@ import pool from "../configs/connectDB";
 
 
 let getHomepage = async (req, res) => {
-
+    const userId = await req.user;
+    const username = userId[0][0].username;
     const [rows, fields] = await pool.execute('SELECT * FROM `users`');
 
-    return res.render('index.ejs', { results: rows });
+    return res.render('index.ejs', { userId: username, results: rows });
 }
 
 let getCreateGroupDetail = async (req, res) => {

@@ -11,8 +11,10 @@ const initAPIRoute = (app) => {
     router.put('/update-user', APIController.updateUser); // PUT -> UPDATE
     router.delete('/delete-user/:userId', APIController.deleteUser); // DELETE -> DELETE
     // create-group
-    router.get('/get-group-detail', APIController.getCreateGroupDetail);
+    router.get('/get-group-detail/:group_id', APIController.getGroupDetail);
     router.post('/create-group-detail', APIController.createGroup);
+    router.put('/update-single', APIController.updateSingle); // PUT -> UPDATE
+    router.delete('/delete-single/:group_id', APIController.deleteSingle); // DELETE -> DELETE
 
     return app.use('/api/v1/', router);
 }

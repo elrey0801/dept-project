@@ -99,10 +99,20 @@ let createGroup = async (req, res) => {
     })
 }
 
-let getCreateGroupDetail = async (req, res) => {
-
+let getGroupDetail = async (req, res) => {
+    let group_id = req.params.group_id;
+    let [result, field] = await pool.execute('SELECT * FROM `list-ct` WHERE group_id = ?', [group_id]);
+    return res.status(200).json({
+        message: 'ok',
+        result: result,
+    })
 }
 
+let updateSingle = async (req, res) => {
+}
+
+let deleteSingle = async (req, res) => {
+}
 module.exports = {
-    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createGroup, getCreateGroupDetail,
+    getAllUsers, getDetailPage, createNewUser, updateUser, deleteUser, createGroup, getGroupDetail, updateSingle, deleteSingle,
 }
