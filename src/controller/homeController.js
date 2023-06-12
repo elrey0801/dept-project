@@ -14,67 +14,15 @@ let getCreateGroupDetail = async (req, res) => {
     const userId = await req.user;
     const username = userId[0][0].username;
     let date = new Date();
-    const groupId = username + '_' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-'
-        + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
+    let group_id = 0, hidden_id = 0;
+    if(req.params.id == 0) 
+        group_id = username + '_' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-'
+            + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
+    else hidden_id = req.params.id;
 
-    return res.render('create-group-detail.ejs', { userId: username, groupId: groupId });
+    return res.render('create-group-detail.ejs', { userId: username, group_id: group_id, hidden_id: hidden_id });
 }
 
-// let createGroup = async (req, res) => {
-//     const userId = await req.user;
-//     const username = userId[0][0].username;
-//     console.log(req.body)
-//     let schedule_start = req.body.schedule_start
-//     let schedule_finish = req.body.schedule_finish
-//     schedule_start = schedule_start.split('T')
-//     schedule_start[1] = schedule_start[1] + ':00'
-//     schedule_start = schedule_start.join(' ')
-
-//     schedule_finish = schedule_finish.split('T')
-//     schedule_finish[1] = schedule_finish[1] + ':00'
-//     schedule_finish = schedule_finish.join(' ')
-
-//     console.log(schedule_start, schedule_finish)
-
-//     const hidden_id = username + '_' + Date.now()
-//     console.log(hidden_id)
-//     await pool.execute('INSERT INTO `list-ct`(hidden_id, group_id, schedule_start, schedule_finish, crew, content, element, station, ptt) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
-//         [hidden_id, req.body.group_id, req.body.schedule_start, req.body.schedule_finish, req.body.crew, req.body.content, req.body.element, req.body.station, req.body.ptt]);
-
-//     await pool.execute('INSERT INTO `ct-permission`(username, id_ct) VALUES(?, ?)', [username, hidden_id]);
-//     // return res.render('create-group-detail.ejs', { userId: username, groupId: req.body.group_id });
-// }
-
-let getDetailPage = async (req, res) => {
-    let userId = req.params.userId;
-    const [user, fields] = await pool.execute(`SELECT * FROM users WHERE id = ?`, [userId]);
-
-    return res.send(JSON.stringify(user));
-}
-
-let createNewUser = async (req, res) => {
-    await pool.execute(`INSERT INTO users(firstName, lastName, email, address) 
-                        VALUES(?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, req.body.address]);
-    return res.redirect('/');
-}
-
-let deleteUser = async (req, res) => {
-    let userId = req.body.userId;
-    await pool.execute(`DELETE FROM users WHERE id = ?`, [userId]);
-    return res.redirect('/');
-}
-
-let editUserView = async (req, res) => {
-    let userId = req.params.userId;
-    const [user, fields] = await pool.execute(`SELECT * FROM users WHERE id = ?`, [userId]);
-    return res.render('update.ejs', { dataUser: user[0] });
-}
-
-let editUser = async (req, res) => {
-    let { firstName, lastName, email, address, id } = req.body;
-    await pool.execute(`UPDATE users SET firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ?`, [firstName, lastName, email, address, id]);
-    return res.redirect('/');
-}
 
 let getUploadFilePage = async (req, res) => {
     return res.render('uploadFile.ejs');
@@ -137,6 +85,5 @@ let runPython = (req, res) => {
 }
 
 module.exports = {
-    getHomepage, getDetailPage, createNewUser, deleteUser, editUserView, editUser, getUploadFilePage,
-    handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail
+    getHomepage, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail
 }

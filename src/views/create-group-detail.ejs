@@ -14,7 +14,7 @@
 <body>
     <div class="topnav">
         <a href="/">Home</a>
-        <a href="/create-group-detail" class="active">Tạo nhóm công tác</a>
+        <a href="#" class="active">Tạo công tác</a>
         <a href="/upload">Upload File</a>
         <form action="/logout?_method=DELETE" method="POST">
             <button type="submit" class="logout-button" style="float: right;">Log Out</button>
@@ -24,13 +24,13 @@
         </a>
     </div>
 
-    <h1>Group Detail</h1>
+    <h1>TẠO CÔNG TÁC</h1>
     <div class="create-group-container">
         <form id="create-group-detail-form" action="/create-group-detail" method="POST">
             <div><b>Thêm công tác: </b></div>
             <div>
                 <label>Group ID: </label>
-                <input id="group_id" type="text" name="group_id" value=<%=groupId %> style='width:15%;' readonly="true">
+                <input id="group_id" type="text" name="group_id" group_key=<%=group_id %> single_key=<%=hidden_id %> style='width:15%;' readonly="true">
             </div>
             <div>
                 <div style="display:inline-block; padding-right: 2%">
@@ -66,7 +66,7 @@
             </div>
             <div id="form-btn" style="margin-top: .5rem;">
             </div>
-            <script src="/api/create-group-detail.js"></script>
+            <script src="/js/create-group-detail.js"></script>
         </form>
     </div>
 

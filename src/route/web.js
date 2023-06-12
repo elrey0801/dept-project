@@ -36,14 +36,10 @@ let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter });
 
 const initWebRoute = (app) => {
     router.get('/', checkAuthenticated, homeController.getHomepage);
-    router.get('/create-group-detail', checkAuthenticated, homeController.getCreateGroupDetail);
-    //router.post('/create-group-detail', homeController.createGroup);
+    router.get('/create-group-detail/:id', checkAuthenticated, homeController.getCreateGroupDetail);
+
     router.get('/python', homeController.runPython);
-    router.get('/detail/user/:userId', checkAuthenticated, homeController.getDetailPage);
-    router.post('/create-new-user', homeController.createNewUser);
-    router.post('/delete-user', homeController.deleteUser);
-    router.get('/edit-user-view/:userId', checkAuthenticated, homeController.editUserView);
-    router.post('/edit-user', homeController.editUser);
+
     router.get('/about', checkAuthenticated, (req, res) => {
         res.send('Hello from the about site :3');
     })
@@ -79,7 +75,6 @@ const initWebRoute = (app) => {
             console.log(e);
             res.redirect('/register');
         }
-        // console.log(await pool.execute(`SELECT * FROM account`));
     })
 
     router.delete('/logout', (req, res, next) => {
@@ -88,7 +83,6 @@ const initWebRoute = (app) => {
             res.redirect('/login');
         });
     });
-
 
     return app.use('/', router);
 }
@@ -108,6 +102,3 @@ function checkNotAuthenticated(req, res, next) {
 }
 
 export default initWebRoute;
-// module.exports = {
-//     checkAuthenticated
-// }
