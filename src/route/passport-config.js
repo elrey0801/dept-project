@@ -1,5 +1,9 @@
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
+import { Strategy } from 'passport-local';
+const LocalStrategy = Strategy;
+
+// const LocalStrategy = require('passport-local').Strategy;
+// const bcrypt = require('bcrypt');
 
 function initialize(passport, getUserName, getUserById) {
     const authenticateUser = async (username, password, done) => {
@@ -27,4 +31,4 @@ function initialize(passport, getUserName, getUserById) {
     })
 }
 
-module.exports = initialize;
+export default initialize;

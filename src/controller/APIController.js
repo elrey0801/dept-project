@@ -1,4 +1,4 @@
-import pool from "../configs/connectDB";
+import pool from "../configs/connectDB.js";
 
 let createGroup = async (req, res) => {
     const user = await req.user;
@@ -179,7 +179,7 @@ let getUserCreatedDetail = async (req, res) => {
         result: result,
     })
 }
-module.exports = {
+export default {
     createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail, getDateDetail, getWeekDetail, getUndefinedDetail,
     getUserCreatedDetail,
 }

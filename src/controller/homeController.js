@@ -1,4 +1,4 @@
-import pool from "../configs/connectDB";
+import pool from "../configs/connectDB.js";
 
 
 
@@ -84,6 +84,6 @@ let runPython = (req, res) => {
 
 }
 
-module.exports = {
+export default {
     getHomepage, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail
 }

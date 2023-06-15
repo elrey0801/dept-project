@@ -1,3 +1,5 @@
+const HOST = 'http://192.168.1.17:8888'
+
 function init_panel() {
     let today = new Date();
     today = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, "0") + '-' + today.getDate();
@@ -17,10 +19,10 @@ async function displayScheduleTable(type) {
 
     async function get_dateWeek_detail(date, type) {
         let res, response;
-        if(type==0) response = await fetch('http://192.168.1.17:8888/api/v1/get-date-detail/' + date);
-        else if(type==1) response = await fetch('http://192.168.1.17:8888/api/v1/get-week-detail/' + date);
-        else if(type==2) response = await fetch('http://192.168.1.17:8888/api/v1/get-undefined-detail/');
-        else if(type==3) response = await fetch('http://192.168.1.17:8888/api/v1/get-usercreated-detail/');
+        if(type==0) response = await fetch(HOST + '/api/v1/get-date-detail/' + date);
+        else if(type==1) response = await fetch(HOST + '/api/v1/get-week-detail/' + date);
+        else if(type==2) response = await fetch(HOST + '/api/v1/get-undefined-detail/');
+        else if(type==3) response = await fetch(HOST + '/api/v1/get-usercreated-detail/');
         res = await response.json();
         return res.result;
     }
@@ -86,7 +88,7 @@ async function deleteEle(hidden_id) {
     console.log('deleting' + hidden_id);
     let response;
     try {
-        response = await fetch('http://192.168.1.17:8888/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
+        response = await fetch(HOST + '/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
         // .then(res => res.text()).then(res => console.log(res));
         if(response.status == 403) alert(`Your account don't have permission to delete this content`);
         else alert(`Deleted`);

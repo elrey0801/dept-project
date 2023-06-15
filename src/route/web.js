@@ -1,12 +1,15 @@
 import express from "express";
-import homeController from "../controller/homeController";
+import homeController from "../controller/homeController.js";
 import multer from 'multer';
 import path from 'path';
 import appRoot from 'app-root-path';
-import pool from "../configs/connectDB";
+import pool from "../configs/connectDB.js";
 import { log } from "console";
-const bcrypt = require('bcrypt');
-const passport = require('passport');
+import bcrypt from 'bcrypt';
+import passport from "passport";
+
+// const bcrypt = require('bcrypt');
+// const passport = require('passport');
 
 let router = express.Router();
 

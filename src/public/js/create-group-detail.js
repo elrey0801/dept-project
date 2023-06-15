@@ -1,3 +1,5 @@
+const HOST = 'http://192.168.1.17:8888';
+
 async function fill_group_id() {
     let group_id = document.getElementById('group_id');
     if (group_id.getAttribute('group_key') != 0) group_id.value = group_id.getAttribute('group_key');
@@ -54,7 +56,7 @@ async function updateElemnent(event) {
     };
     let response;
     try {
-        response = await fetch('http://192.168.1.17:8888/api/v1/update-single', options)
+        response = await fetch(HOST + '/api/v1/update-single', options)
         // .then((res) => res.json()).then(data => {
         //     console.log(data);
         // });
@@ -68,7 +70,7 @@ async function updateElemnent(event) {
 }
 
 async function get_single_detail(hidden_id) {
-    const response = await fetch('http://192.168.1.17:8888/api/v1/get-single-detail/' + hidden_id);
+    const response = await fetch(HOST + '/api/v1/get-single-detail/' + hidden_id);
     var res = await response.json();
     console.log(res);
     return res.result[0];
@@ -142,7 +144,7 @@ async function createGroup(event) {
         console.log(options)
         let response;
         try {
-            response = await fetch('http://192.168.1.17:8888/api/v1/create-group-detail', options);
+            response = await fetch(HOST + '/api/v1/create-group-detail', options);
             if (response.status == 403) alert(`Your account don't have permission to add to this content`)
             else alert("Added")
         } catch (error) {
@@ -157,7 +159,7 @@ async function createGroup(event) {
 async function displayScheduleTable() {
 
     async function get_detail(group_id) {
-        const response = await fetch('http://192.168.1.17:8888/api/v1/get-group-detail/' + group_id);
+        const response = await fetch(HOST + '/api/v1/get-group-detail/' + group_id);
         var res = await response.json();
         return res.result;
     }
@@ -228,7 +230,7 @@ async function deleteEle(hidden_id) {
     console.log('deleting' + hidden_id);
     let response;
     try {
-        response = await fetch('http://192.168.1.17:8888/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
+        response = await fetch(HOST + '/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
         // .then(res => res.text()).then(res => console.log(res));
         if(response.status == 403) alert(`Your account don't have permission to delete this content`);
         else alert(`Deleted`);

@@ -1,21 +1,28 @@
 import express from 'express';
-import configViewEngine from './configs/viewEngine';
-import initWebRoute from "./route/web"
-import initAPIRoute from "./route/api"
+import configViewEngine from './configs/viewEngine.js';
+import initWebRoute from "./route/web.js"
+import initAPIRoute from "./route/api.js"
 import cors from 'cors';
-import pool from "./configs/connectDB";
-
-require('dotenv').config();
+import pool from "./configs/connectDB.js";
+import dotenv from 'dotenv';
+dotenv.config();
+// require('dotenv').config();
 // import * as path from 'path';
 // const express = require('express');
 // const path = require('path');
 
 // add authenticater libraries
-const flash = require('express-flash');
-const session = require('express-session');
-const passport = require('passport');
-const initializePassport = require('./route/passport-config');
-const methodOverride = require('method-override')
+import flash from 'express-flash';
+import session from 'express-session';
+import passport from 'passport';
+import initializePassport from './route/passport-config.js';
+import methodOverride from 'method-override';
+
+// const flash = require('express-flash');
+// const session = require('express-session');
+// const passport = require('passport');
+// const initializePassport = require('./route/passport-config');
+// const methodOverride = require('method-override');
 
 
 const app = express();
