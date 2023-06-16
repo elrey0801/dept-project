@@ -1,4 +1,4 @@
-const HOST = 'http://192.168.1.17:8888/';
+const HOST= 'http://192.168.1.17:8888/';
 
 async function fill_group_id() {
     let group_id = document.getElementById('group_id');
