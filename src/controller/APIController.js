@@ -232,7 +232,90 @@ let getUserCreatedDetail = async (req, res) => {
         result: result,
     })
 }
+
+let getSingleNote = async (req, res) => {
+    let idNote = req.params.id;
+
+    let [note, fields] = await pool.execute('SELECT * FROM `ptvh-note` WHERE id = ?', [idNote]);
+
+    return res.status(200).json({
+        message: 'get single PTVH note ok',
+        result: note,
+    })
+}
+
+let getPTVHNote = async (req, res) => {
+    let date = req.params.date.split('-');
+    let day = date[2], month = date[1], year = date[0];
+
+    let [result, fields] = await pool.execute('SELECT * FROM `ptvh-note` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
+        [day, month, year]);
+
+    return res.status(200).json({
+        message: 'get PTVH note ok',
+        result: result,
+    })
+}
+
+let deleteSingleNote = async (req, res) => {
+    let idNote = req.params.id;
+    const user = await req.user;
+    let username = user[0][0].username;
+    console.log(idNote);
+    if (!idNote)
+        return res.status(200).json({
+            message: 'missing params',
+        })
+
+    let [result, fields] = await pool.execute('SELECT * FROM `ptvh-note` WHERE id = ?', [idNote]);
+    if (result.length == 0)
+        return res.status(200).json({
+            message: 'idNote ' + idNote + ' does not exist',
+        })
+
+    let ptvh_date = result[0].ptvh_date;
+    let [checkPTVH, field_checkPTVH] = await pool.execute('SELECT * FROM `ptvh` WHERE (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?)\
+    AND YEAR(ptvh_date) = YEAR(?))',
+        [ptvh_date, ptvh_date, ptvh_date]);
+
+    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+        let logstr = '[' + new Date() + ']---' + username + '---try to delete note---' + idNote + '---when PTVH is locked---\n'
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
+        return res.status(406).json({
+            message: `PTVH ngày này đã khóa, không thể xóa nội dung!`,
+        })
+    }
+
+    await pool.execute('DELETE FROM `ptvh-note` WHERE id = ?', [idNote]);
+
+    let logstr = '[' + new Date() + ']---' + username + '---deleted a PTVH note---' + idNote + '\n';
+    console.log(logstr);
+    fs.appendFileSync("logs.txt", logstr);
+
+    return res.status(200).json({
+        message: 'delete PTVH note ok',
+    })
+}
+
+let getPTVHStatus = async (req, res) => {
+    let date = req.params.date.split('-');
+    let day = date[2], month = date[1], year = date[0];
+
+    let [result, fields] = await pool.execute('SELECT * FROM `ptvh` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
+        [day, month, year]);
+
+    let ptvhStatus = 0;
+    if(result.length == 0) {
+        await pool.execute('INSERT INTO `ptvh` (`ptvh_date`, `is_locked`, `id`) VALUES (? , ?, NULL);', [req.params.date, 0]);
+    } else ptvhStatus = result[0].is_locked;
+    return res.status(200).json({
+        message: 'get PTVH status ok',
+        ptvhStatus: ptvhStatus,
+    })
+}
+
 export default {
     createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail, getDateDetail, getWeekDetail, getUndefinedDetail,
-    getUserCreatedDetail,
+    getUserCreatedDetail, getSingleNote, getPTVHNote, deleteSingleNote, getPTVHStatus,
 }

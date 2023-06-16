@@ -15,6 +15,10 @@ const initAPIRoute = (app) => {
     router.put('/update-single', APIController.updateSingle); // PUT -> UPDATE
     router.delete('/delete-single/:hidden_id', APIController.deleteSingle); // DELETE -> DELETE
 
+    router.get('/get-ptvh-status/:date', APIController.getPTVHStatus);
+    router.get('/get-single-note/:id', APIController.getSingleNote);
+    router.get('/get-ptvh-note/:date', APIController.getPTVHNote);
+    router.delete('/delete-single-note/:id', APIController.deleteSingleNote);
     return app.use('/api/v1/', router);
 }
 

@@ -16,3 +16,43 @@
 [Fri Jun 16 2023 16:17:55 GMT+0700 (Giờ Đông Dương)]---client---updated---client_1686906999731
 [Fri Jun 16 2023 16:20:56 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
 [Fri Jun 16 2023 16:21:45 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 21:41:53 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 21:45:42 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 21:58:11 GMT+0700 (Giờ Đông Dương)]---client---logged in
+[Fri Jun 16 2023 21:59:08 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:00:02 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:01:25 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:02:19 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:03:08 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:38:49 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:51:06 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:51:40 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:53:03 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:54:40 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:55:13 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 22:55:34 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:05:32 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:08:53 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:10:49 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:12:43 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:12:46 GMT+0700 (Giờ Đông Dương)]---elrey---try to delete note---2---when PTVH is locked---
+[Fri Jun 16 2023 23:12:49 GMT+0700 (Giờ Đông Dương)]---elrey---try to delete note---2---when PTVH is locked---
+[Fri Jun 16 2023 23:13:47 GMT+0700 (Giờ Đông Dương)]---elrey---deleted a PTVH note---1
+[Fri Jun 16 2023 23:14:23 GMT+0700 (Giờ Đông Dương)]---elrey---try to delete note---2---when PTVH is locked---
+[Fri Jun 16 2023 23:24:25 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:26:53 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:58:09 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Fri Jun 16 2023 23:59:00 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:03:24 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:07:30 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:07:55 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:08:41 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:09:28 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:11:02 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:12:25 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:13:54 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:15:25 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:16:33 GMT+0700 (Giờ Đông Dương)]---elrey---logged in
+[Sat Jun 17 2023 00:17:05 GMT+0700 (Giờ Đông Dương)]---elrey---try to delete note---2---when PTVH is locked---
+[Sat Jun 17 2023 00:17:08 GMT+0700 (Giờ Đông Dương)]---elrey---try to delete note---3---when PTVH is locked---
+[Sat Jun 17 2023 00:17:10 GMT+0700 (Giờ Đông Dương)]---elrey---try to delete note---4---when PTVH is locked---
