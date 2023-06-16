@@ -1,4 +1,5 @@
 const HOST = 'http://192.168.1.17:8888'
+let current_view = 0;
 
 function init_panel() {
     let today = new Date();
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', init_panel);
 async function displayScheduleTable(type) {
 
     async function get_dateWeek_detail(date, type) {
+        current_view = type;
         let res, response;
         if(type==0) response = await fetch(HOST + '/api/v1/get-date-detail/' + date);
         else if(type==1) response = await fetch(HOST + '/api/v1/get-week-detail/' + date);
@@ -82,7 +84,7 @@ async function displayScheduleTable(type) {
                 </table>`
     document.getElementById("list-ct-container").innerHTML = table;
 }
-document.addEventListener('DOMContentLoaded', function() {displayScheduleTable(0);});
+document.addEventListener('DOMContentLoaded', function() {displayScheduleTable(current_view);});
 
 async function deleteEle(hidden_id) {
     console.log('deleting' + hidden_id);
@@ -95,5 +97,5 @@ async function deleteEle(hidden_id) {
     } catch (error) {
         console.log(error);
     }
-    displayScheduleTable();
+    displayScheduleTable(current_view);
 }
