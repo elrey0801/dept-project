@@ -40,6 +40,7 @@ let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter });
 const initWebRoute = (app) => {
     router.get('/', checkAuthenticated, homeController.getHomepage);
     router.get('/create-group-detail/:id', checkAuthenticated, homeController.getCreateGroupDetail);
+    router.get('/ptvh', checkAuthenticated, homeController.getPTVH);
 
     router.get('/python', homeController.runPython);
 

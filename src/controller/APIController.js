@@ -1,4 +1,5 @@
 import pool from "../configs/connectDB.js";
+import fs from 'fs';
 
 let createGroup = async (req, res) => {
     const user = await req.user;
@@ -9,10 +10,14 @@ let createGroup = async (req, res) => {
     if (group.length > 0) {
         let [ifPermiss, f2] = await pool.execute('SELECT * FROM `ct-permission` WHERE id_ct = ?', [group[0].hidden_id]);
 
-        if (username != ifPermiss[0].username)
+        if (username != ifPermiss[0].username) {
+            let logstr = '[' + new Date() + ']---' + username + `---try to add content to group_id: ${group_id}\n`;
+            console.log(logstr);
+            fs.appendFileSync("logs.txt", logstr);
             return res.status(403).json({
                 error: `Your account don't have permission to add to this content`,
             })
+        } 
     }
 
     let schedule_start = req.body.schedule_start;
@@ -27,6 +32,19 @@ let createGroup = async (req, res) => {
         schedule_finish = schedule_finish.split('T')
         schedule_finish[1] = schedule_finish[1] + ':00'
         schedule_finish = schedule_finish.join(' ')
+    }
+
+    let [checkPTVH, field_checkPTVH] = await pool.execute('SELECT * FROM `ptvh` WHERE (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?)\
+    AND YEAR(ptvh_date) = YEAR(?)) OR (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?) AND YEAR(ptvh_date) = YEAR(?))',
+        [schedule_start, schedule_start, schedule_start, schedule_finish, schedule_finish, schedule_finish]);
+
+    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+        let logstr = '[' + new Date() + ']---' + username + '---try to create a row when PTVH is locked\n';
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
+        return res.status(406).json({
+            message: `PTVH ngày này đã khóa, không thể thêm công tác!`,
+        })
     }
 
     const hidden_id = username + '_' + Date.now()
@@ -65,14 +83,20 @@ let updateSingle = async (req, res) => {
     let username = user[0][0].username;
     let [ifPermiss, field] = await pool.execute('SELECT * FROM `ct-permission` WHERE id_ct = ?', [hidden_id]);
 
-    if (username != ifPermiss[0].username)
-    {
-        console.log('[' + new Date() + ']---' + username + '---try to update---' + hidden_id);
+    if (username != ifPermiss[0].username) {
+        let logstr = '[' + new Date() + ']---' + username + '---try to update---' + hidden_id + '\n';
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
         return res.status(403).json({
-            error: `Your account don't have permission to update this content`,
+            message: `Your account don't have permission to update this content`,
         })
     }
-    
+
+    if (!hidden_id)
+        return res.status(200).json({
+            message: 'missing params update method',
+        })
+
     let schedule_start = req.body.schedule_start;
     let schedule_finish = req.body.schedule_finish;
     if (schedule_start !== null) {
@@ -87,15 +111,25 @@ let updateSingle = async (req, res) => {
         schedule_finish = schedule_finish.join(' ')
     }
 
-    if (!hidden_id)
-        return res.status(200).json({
-            message: 'missing params update method',
+    let [checkPTVH, field_checkPTVH] = await pool.execute('SELECT * FROM `ptvh` WHERE (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?)\
+    AND YEAR(ptvh_date) = YEAR(?)) OR (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?) AND YEAR(ptvh_date) = YEAR(?))',
+        [schedule_start, schedule_start, schedule_start, schedule_finish, schedule_finish, schedule_finish]);
+
+    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+        let logstr = '[' + new Date() + ']---' + username + '---try to update---' + hidden_id + '---when PTVH is locked---\n'
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
+        return res.status(406).json({
+            message: `PTVH ngày này đã khóa, không thể sửa!`,
         })
+    }
 
     await pool.execute('UPDATE `list-ct` SET schedule_start = ?, schedule_finish = ?, crew = ?, station = ?, element = ?, content = ?, ptt = ? WHERE hidden_id = ?',
         [schedule_start, schedule_finish, req.body.crew, req.body.station, req.body.element, req.body.content, req.body.ptt, hidden_id]);
 
-    console.log('[' + new Date() + ']---' + username + '---updated---' + hidden_id);
+    let logstr = '[' + new Date() + ']---' + username + '---updated---' + hidden_id + '\n';
+    console.log(logstr);
+    fs.appendFileSync("logs.txt", logstr);
 
     return res.status(200).json({
         message: 'update ok',
@@ -103,19 +137,21 @@ let updateSingle = async (req, res) => {
 }
 
 let deleteSingle = async (req, res) => {
+
     let hidden_id = req.params.hidden_id;
     const user = await req.user;
     let username = user[0][0].username;
     let [ifPermiss, field] = await pool.execute('SELECT * FROM `ct-permission` WHERE id_ct = ?', [hidden_id]);
 
-    if (username != ifPermiss[0].username)
-    {
-        console.log('[' + new Date() + ']---' + username + '---try to delete---' + hidden_id);
+    if (username != ifPermiss[0].username) {
+        let logstr = '[' + new Date() + ']---' + username + '---try to delete---' + hidden_id + '\n';
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
         return res.status(403).json({
             error: `Your account don't have permission to delete this content`,
         })
     }
-        
+
     if (!hidden_id)
         return res.status(200).json({
             message: 'missing params',
@@ -127,9 +163,26 @@ let deleteSingle = async (req, res) => {
             message: 'hidden_id ' + hidden_id + ' does not exist',
         })
 
+    let schedule_start = result[0].schedule_start;
+    let schedule_finish = result[0].schedule_finish;
+    let [checkPTVH, field_checkPTVH] = await pool.execute('SELECT * FROM `ptvh` WHERE (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?)\
+    AND YEAR(ptvh_date) = YEAR(?)) OR (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?) AND YEAR(ptvh_date) = YEAR(?))',
+        [schedule_start, schedule_start, schedule_start, schedule_finish, schedule_finish, schedule_finish]);
+
+    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+        let logstr = '[' + new Date() + ']---' + username + '---try to delete---' + hidden_id + '---when PTVH is locked---\n'
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
+        return res.status(406).json({
+            message: `PTVH ngày này đã khóa, không thể xóa!`,
+        })
+    }
+
     await pool.execute('DELETE FROM `list-ct` WHERE hidden_id = ?', [hidden_id]);
 
-    console.log('[' + new Date() + ']---' + username + '---deleted---' + hidden_id);
+    let logstr = '[' + new Date() + ']---' + username + '---deleted---' + hidden_id + '\n';
+    console.log(logstr);
+    fs.appendFileSync("logs.txt", logstr);
 
     return res.status(200).json({
         message: 'delete ok',

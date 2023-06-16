@@ -12,9 +12,9 @@
 
 <body>
     <div class="topnav">
-        <a href="#" class="active">Home</a>
+        <a href="/">Home</a>
         <a href="/create-group-detail/0">Tạo công tác</a>
-        <a href="/ptvh">PTVH</a>
+        <a href="#" class="active">PTVH</a>
         <a href="/upload">Upload File</a>
         <form action="/logout?_method=DELETE" method="POST">
             <button type="submit" class="logout-button" style="float: right;">Log Out</button>
@@ -23,10 +23,23 @@
             <%=userId %>
         </a>
     </div>
-    <h1>HOME PAGE</h1>
+    <h1>PTVH</h1>
     <div id="date-list-container" class="date-list-container"> </div>
+    <div class="create-group-container">
+        <form id="create-group-detail-form" action="/create-group-detail" method="POST">
+            <div><b>Thêm lưu ý vận hành: </b></div>
+            <div>
+                <label>Nội dung: </label>
+                <textarea type="text" id="content" name="content" wrap="soft"
+                    style='width:25rem; height:7rem; word-break: break-word'></textarea>
+            </div>
+            <div id="form-btn" style="margin-top: .5rem;">
+            </div>
+        </form>
+    </div>
+
     <div id="list-ct-container"> </div>
-    <script src="/js/index.js"></script>
+    <script src="/js/ptvh.js"></script>
 
     <img src="/img/tran.jpg" width="50%" class="center" />
 </body>

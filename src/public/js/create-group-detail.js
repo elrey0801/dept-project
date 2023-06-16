@@ -60,7 +60,9 @@ async function updateElemnent(event) {
         // .then((res) => res.json()).then(data => {
         //     console.log(data);
         // });
+        console.log(response)
         if (response.status == 403) alert(`Your account don't have permission to update this content`);
+        if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể sửa công tác!`);
     } catch (error) {
         console.log(error);
     }
@@ -125,7 +127,8 @@ async function createGroup(event) {
     var station = document.getElementById('station').value;
     var ptt = document.getElementById('ptt').value;
     var group_id = document.getElementById('group_id').value;
-    if (element != '') {
+    console.log(schedule_start, schedule_finish)
+    if (element != '' && schedule_start != null && schedule_finish != null) {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -145,8 +148,9 @@ async function createGroup(event) {
         let response;
         try {
             response = await fetch(HOST + '/api/v1/create-group-detail', options);
-            if (response.status == 403) alert(`Your account don't have permission to add to this content`)
-            else alert("Added")
+            if (response.status == 403) alert(`Your account don't have permission to add to this content`);
+            else if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể thêm công tác!`);
+            else alert("Added");
         } catch (error) {
             console.log(error);
         }
@@ -233,6 +237,7 @@ async function deleteEle(hidden_id) {
         response = await fetch(HOST + '/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
         // .then(res => res.text()).then(res => console.log(res));
         if(response.status == 403) alert(`Your account don't have permission to delete this content`);
+        else if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể xóa công tác!`);
         else alert(`Deleted`);
     } catch (error) {
         console.log(error);

@@ -1,3 +1,4 @@
+import fs from 'fs';
 import bcrypt from 'bcrypt';
 import { Strategy } from 'passport-local';
 const LocalStrategy = Strategy;
@@ -15,7 +16,9 @@ function initialize(passport, getUserName, getUserById) {
 
         try {
             if (await bcrypt.compare(password, user.password)) {
-                console.log('[' + new Date() + ']---' + username + '---logged in');
+                let logstr = '[' + new Date() + ']---' + username + '---logged in\n';
+                console.log(logstr);
+                fs.appendFileSync("logs.txt", logstr);
                 return done(null, user);
             }
             else return done(null, false, { message: "Wrong password" });

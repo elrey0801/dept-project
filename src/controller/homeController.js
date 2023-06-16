@@ -23,6 +23,14 @@ let getCreateGroupDetail = async (req, res) => {
     return res.render('create-group-detail.ejs', { userId: username, group_id: group_id, hidden_id: hidden_id });
 }
 
+let getPTVH = async (req, res) => {
+    const userId = await req.user;
+    const username = userId[0][0].username;
+    const [rows, fields] = await pool.execute('SELECT * FROM `users`');
+
+    return res.render('ptvh.ejs', { userId: username, results: rows });
+}
+
 
 let getUploadFilePage = async (req, res) => {
     return res.render('uploadFile.ejs');
@@ -85,5 +93,5 @@ let runPython = (req, res) => {
 }
 
 export default {
-    getHomepage, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail
+    getHomepage, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail, getPTVH
 }
