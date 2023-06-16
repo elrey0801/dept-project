@@ -1,4 +1,4 @@
-const HOST = 'http://4.193.66.122:8888'
+const HOST = 'http://192.168.1.17:8888/'
 let current_view = 0;
 
 function init_panel() {
