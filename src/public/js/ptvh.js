@@ -1,4 +1,4 @@
-const HOST = 'http://4.193.66.122:8888'
+const HOST = 'https://elrey0801.tech'
 
 //not implemented yet
 function lockPTVH() {

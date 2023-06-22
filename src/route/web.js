@@ -8,49 +8,16 @@ import { log } from "console";
 import bcrypt from 'bcrypt';
 import passport from "passport";
 
-// const bcrypt = require('bcrypt');
-// const passport = require('passport');
-
 let router = express.Router();
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        //cb(null, "E:/dev/node/learning_basic/src/public/img");
-        cb(null, appRoot + "/src/public/img");
-    },
-
-    // By default, multer removes file extensions so let's add them back
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
-
-const imageFilter = function (req, file, cb) {
-    // Accept images only
-    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-        req.fileValidationError = 'Only image files are allowed!';
-        return cb(new Error('Only image files are allowed!'), false);
-    }
-    cb(null, true);
-};
-
-let upload = multer({ storage: storage, fileFilter: imageFilter });
-let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter });
 
 const initWebRoute = (app) => {
     router.get('/', checkAuthenticated, homeController.getHomepage);
     router.get('/create-group-detail/:id', checkAuthenticated, homeController.getCreateGroupDetail);
     router.get('/ptvh', checkAuthenticated, homeController.getPTVH);
-
-    router.get('/python', homeController.runPython);
-
     router.get('/about', checkAuthenticated, (req, res) => {
         res.send('Hello from the about site :3');
     })
-
-    router.get('/upload', checkAuthenticated, homeController.getUploadFilePage);
-    router.post('/upload-profile-pic', upload.single('profile_pic'), homeController.handleUploadFile);
-    router.post('/upload-multi-pic', uploadMultipleFiles.array('multi_pic', 3), homeController.handleUploadMultiFiles);
 
     // authentication
     router.get('/login', checkNotAuthenticated, (req, res) => {

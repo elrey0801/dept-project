@@ -1,4 +1,4 @@
-const HOST = 'http://4.193.66.122:8888';
+const HOST = 'https://elrey0801.tech';
 
 async function fill_group_id() {
     let group_id = document.getElementById('group_id');
