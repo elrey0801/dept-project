@@ -1,4 +1,4 @@
-const HOST= 'http://192.168.1.17:8888/';
+const HOST = 'http://localhost:8888';
 
 async function fill_group_id() {
     let group_id = document.getElementById('group_id');
@@ -236,7 +236,7 @@ async function deleteEle(hidden_id) {
     try {
         response = await fetch(HOST + '/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
         // .then(res => res.text()).then(res => console.log(res));
-        if(response.status == 403) alert(`Your account don't have permission to delete this content`);
+        if (response.status == 403) alert(`Your account don't have permission to delete this content`);
         else if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể xóa công tác!`);
         else alert(`Deleted`);
     } catch (error) {

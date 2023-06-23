@@ -1,3 +1,4 @@
+import res from "express/lib/response.js";
 import pool from "../configs/connectDB.js";
 import fs from 'fs';
 
@@ -17,7 +18,7 @@ let createGroup = async (req, res) => {
             return res.status(403).json({
                 error: `Your account don't have permission to add to this content`,
             })
-        } 
+        }
     }
 
     let schedule_start = req.body.schedule_start;
@@ -233,6 +234,44 @@ let getUserCreatedDetail = async (req, res) => {
     })
 }
 
+let getUserCreatedDateDetail = async (req, res) => {
+    let date = req.params.date.split('-');
+    let day = date[2], month = date[1], year = date[0];
+
+    const user = await req.user;
+    let username = user[0][0].username;
+
+    let [result, fields] = await pool.execute(
+        'SELECT * FROM `list-ct`, `ct-permission` WHERE (DAY(schedule_start) = ? AND MONTH(schedule_start) = ?  AND YEAR(schedule_start) = ?) OR\
+        (DAY(schedule_finish) = ? AND MONTH(schedule_finish) = ?  AND YEAR(schedule_finish) = ?)\
+        INTERSECT\
+        SELECT * FROM `list-ct`, `ct-permission` WHERE `list-ct`.hidden_id = `ct-permission`.`id_ct` AND `ct-permission`.username = ?',
+        [day, month, year, day, month, year, username]);
+
+    return res.status(200).json({
+        message: 'get user-created-date data ok',
+        result: result,
+    })
+}
+
+let getUserCreatedWeekDetail = async (req, res) => {
+    let date = req.params.date;
+    const user = await req.user;
+    let username = user[0][0].username;
+
+    let [result, fields] = await pool.execute(
+        'SELECT * FROM `list-ct`, `ct-permission` WHERE (WEEK(schedule_start) = WEEK(?)  AND YEAR(schedule_start) = YEAR(?)) OR \
+        (WEEK(schedule_finish) = WEEK(?)  AND YEAR(schedule_finish) = YEAR(?))\
+        INTERSECT\
+        SELECT * FROM `list-ct`, `ct-permission` WHERE `list-ct`.hidden_id = `ct-permission`.`id_ct` AND `ct-permission`.username = ?',
+        [date, date, date, date, username]);
+
+    return res.status(200).json({
+        message: 'get user-created-week data ok',
+        result: result,
+    })
+}
+
 let getSingleNote = async (req, res) => {
     let idNote = req.params.id;
 
@@ -306,7 +345,7 @@ let getPTVHStatus = async (req, res) => {
         [day, month, year]);
 
     let ptvhStatus = 0;
-    if(result.length == 0) {
+    if (result.length == 0) {
         await pool.execute('INSERT INTO `ptvh` (`ptvh_date`, `is_locked`, `id`) VALUES (? , ?, NULL);', [req.params.date, 0]);
     } else ptvhStatus = result[0].is_locked;
     return res.status(200).json({
@@ -317,5 +356,5 @@ let getPTVHStatus = async (req, res) => {
 
 export default {
     createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail, getDateDetail, getWeekDetail, getUndefinedDetail,
-    getUserCreatedDetail, getSingleNote, getPTVHNote, deleteSingleNote, getPTVHStatus,
+    getUserCreatedDetail, getSingleNote, getPTVHNote, deleteSingleNote, getPTVHStatus, getUserCreatedDateDetail, getUserCreatedWeekDetail,
 }

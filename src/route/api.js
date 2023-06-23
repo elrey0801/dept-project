@@ -10,6 +10,8 @@ const initAPIRoute = (app) => {
     router.get('/get-week-detail/:date', checkAuthenticated, APIController.getWeekDetail);
     router.get('/get-undefined-detail', checkAuthenticated, APIController.getUndefinedDetail);
     router.get('/get-usercreated-detail', checkAuthenticated, APIController.getUserCreatedDetail);
+    router.get('/get-usercreated-date-detail/:date', checkAuthenticated, APIController.getUserCreatedDateDetail);
+    router.get('/get-usercreated-week-detail/:date', checkAuthenticated, APIController.getUserCreatedWeekDetail);
     router.get('/get-single-detail/:hidden_id', checkAuthenticated, APIController.getSingleDetail);
     router.post('/create-group-detail', checkAuthenticated, APIController.createGroup);
     router.put('/update-single', checkAuthenticated, APIController.updateSingle); // PUT -> UPDATE

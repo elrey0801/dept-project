@@ -1,8 +1,8 @@
-const HOST = 'http://192.168.1.17:8888/'
+const HOST = 'http://localhost:8888'
 
 //not implemented yet
 function lockPTVH() {
-    
+
 }
 
 function init_panel(date) {
@@ -12,10 +12,10 @@ function init_panel(date) {
                     <button id = "ptvh-list-button" class="button" onclick="displayPTVHTable()">Xem PTVN ngày</button>
                     <button id="ptvh-lock-button" class="button" onclick="lockPTVH()">Khóa/Mở khóa</button>
                 </div>`;
-                    
+
     document.getElementById("date-list-container").innerHTML = panel;
 }
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let today = new Date();
     today = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, "0") + '-' + today.getDate();
     init_panel(today);
@@ -57,11 +57,11 @@ async function displayNoteTable() {
                 </thead>
                 <tbody>`
 
-    let date = document.getElementById('calender').value; 
-    
+    let date = document.getElementById('calender').value;
+
     let data = await get_ptvh_note(date);
     addStatus();
-    for(let row of data) {
+    for (let row of data) {
         table += `<tr>  
                     <td style="text-align: left;">${row.note.replaceAll("\n", "<br/>")}</td>
                     <td>
@@ -76,7 +76,7 @@ async function displayNoteTable() {
     document.getElementById("note-ct-container").innerHTML = table;
 }
 
-document.addEventListener('DOMContentLoaded', function() {displayNoteTable();});
+document.addEventListener('DOMContentLoaded', function () { displayNoteTable(); });
 
 async function displayPTVHTable() {
     displayNoteTable();
@@ -87,7 +87,7 @@ async function displayPTVHTable() {
         return res.result;
     }
 
-    let data, date = document.getElementById('calender').value; 
+    let data, date = document.getElementById('calender').value;
     data = await get_date_detail(date);
     let table = `
                 <table border="1" width="100%" class="w3-table-all w3-hoverable">
@@ -143,7 +143,7 @@ async function displayPTVHTable() {
                 </table>`
     document.getElementById("list-ct-container").innerHTML = table;
 }
-document.addEventListener('DOMContentLoaded', function() {displayPTVHTable();});
+document.addEventListener('DOMContentLoaded', function () { displayPTVHTable(); });
 
 async function deleteNote(note_id) {
     console.log('deleting note ' + note_id);
@@ -151,7 +151,7 @@ async function deleteNote(note_id) {
     try {
         response = await fetch(HOST + '/api/v1/delete-single-note/' + note_id, { method: 'DELETE' })
         // .then(res => res.text()).then(res => console.log(res));
-        if(response.status == 403) alert(`Your account don't have permission to delete this content`);
+        if (response.status == 403) alert(`Your account don't have permission to delete this content`);
         else if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể xóa nội dung!`);
         else alert(`Deleted`);
     } catch (error) {
@@ -169,9 +169,9 @@ async function get_ptvh_status(date) {
 }
 
 async function addStatus() {
-    let date = document.getElementById('calender').value; 
+    let date = document.getElementById('calender').value;
     let status = await get_ptvh_status(date);
     let statusText = status === 1 ? '<label style="color:red;"><b>PTVH đã khóa</b></label>' : '<label><b>PTVH chưa khóa</b></label>';
-    document.getElementById('ptvh-status').innerHTML = statusText; 
+    document.getElementById('ptvh-status').innerHTML = statusText;
 }
-document.addEventListener('DOMContentLoaded', function() {addStatus();});
+document.addEventListener('DOMContentLoaded', function () { addStatus(); });

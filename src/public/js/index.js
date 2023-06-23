@@ -1,4 +1,4 @@
-const HOST = 'http://192.168.1.17:8888/'
+const HOST = 'http://localhost:8888'
 let current_view = 0;
 
 function init_panel() {
@@ -9,10 +9,13 @@ function init_panel() {
                     <input type="date" name="date" id="calender" value="${today}">
                     <button id = "date-list-button" class="button" onclick="displayScheduleTable(0)" type=0>Xem lịch ngày</button>
                     <button id = "week-list-button" class="button" onclick="displayScheduleTable(1)" type=1>Xem lịch tuần</button>
-                    <button id = "undefined-list-button" class="button" onclick="displayScheduleTable(2)" type=1>Công tác chưa nhập ngày</button>
-                    <button id = "undefined-list-button" class="button" onclick="displayScheduleTable(3)" type=1>Cá nhân</button>
+                    <label for="personal">
+                        <input type="checkbox" id="personal" name="personal" value="no"> Cá nhân 
+                    </label>
                 </div>`
     document.getElementById("date-list-container").innerHTML = panel;
+    //<button id = "undefined-list-button" class="button" onclick="displayScheduleTable(2)" type=1>Công tác chưa nhập ngày</button>
+    //<button id = "undefined-list-button" class="button" onclick="displayScheduleTable(3)" type=1>Cá nhân</button>
 }
 document.addEventListener('DOMContentLoaded', init_panel);
 
@@ -20,16 +23,18 @@ async function displayScheduleTable(type) {
 
     async function get_dateWeek_detail(date, type) {
         current_view = type;
+        let isPersonal = document.querySelector('#personal').checked;
+        if (isPersonal) type += 2;
         let res, response;
-        if(type==0) response = await fetch(HOST + '/api/v1/get-date-detail/' + date);
-        else if(type==1) response = await fetch(HOST + '/api/v1/get-week-detail/' + date);
-        else if(type==2) response = await fetch(HOST + '/api/v1/get-undefined-detail/');
-        else if(type==3) response = await fetch(HOST + '/api/v1/get-usercreated-detail/');
+        if (type == 0) response = await fetch(HOST + '/api/v1/get-date-detail/' + date);
+        else if (type == 1) response = await fetch(HOST + '/api/v1/get-week-detail/' + date);
+        else if (type == 2) response = await fetch(HOST + '/api/v1/get-usercreated-date-detail/' + date);
+        else if (type == 3) response = await fetch(HOST + '/api/v1/get-usercreated-week-detail/' + date);
         res = await response.json();
         return res.result;
     }
 
-    let data, dateWeek = document.getElementById('calender').value; 
+    let data, dateWeek = document.getElementById('calender').value;
     data = await get_dateWeek_detail(dateWeek, type);
     let table = `
                 <table border="1" width="100%" class="w3-table-all w3-hoverable">
@@ -84,7 +89,7 @@ async function displayScheduleTable(type) {
                 </table>`
     document.getElementById("list-ct-container").innerHTML = table;
 }
-document.addEventListener('DOMContentLoaded', function() {displayScheduleTable(current_view);});
+document.addEventListener('DOMContentLoaded', function () { displayScheduleTable(current_view); });
 
 async function deleteEle(hidden_id) {
     console.log('deleting' + hidden_id);
@@ -92,7 +97,7 @@ async function deleteEle(hidden_id) {
     try {
         response = await fetch(HOST + '/api/v1/delete-single/' + hidden_id, { method: 'DELETE' })
         // .then(res => res.text()).then(res => console.log(res));
-        if(response.status == 403) alert(`Your account don't have permission to delete this content`);
+        if (response.status == 403) alert(`Your account don't have permission to delete this content`);
         else if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể xóa công tác!`);
         else alert(`Deleted`);
     } catch (error) {
