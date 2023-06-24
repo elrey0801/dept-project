@@ -361,7 +361,6 @@ let lockPTVH = async (req, res) => {
     var [result, fields] = await pool.execute('SELECT * FROM `ptvh` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
     [day, month, year]);
 
-    console.log(result[0].is_locked);
     if(!result[0].is_locked) {
         await pool.execute('UPDATE `ptvh` SET `is_locked` = 1  WHERE `ptvh`.`id` = ?',
     [result[0].id]);
