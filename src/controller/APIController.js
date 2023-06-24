@@ -354,7 +354,29 @@ let getPTVHStatus = async (req, res) => {
     })
 }
 
+let lockPTVH = async (req, res) => {
+    let date = req.body.date.split('-');
+    let day = date[2], month = date[1], year = date[0];
+
+    var [result, fields] = await pool.execute('SELECT * FROM `ptvh` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
+    [day, month, year]);
+
+    console.log(result[0].is_locked);
+    if(!result[0].is_locked) {
+        await pool.execute('UPDATE `ptvh` SET `is_locked` = 1  WHERE `ptvh`.`id` = ?',
+    [result[0].id]);
+    } else {
+        await pool.execute('UPDATE `ptvh` SET `is_locked` = 0  WHERE `ptvh`.`id` = ?',
+    [result[0].id]);
+    }
+
+    return res.status(200).json({
+        message: 'update PTVH status ok',
+    })
+}
+
 export default {
     createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail, getDateDetail, getWeekDetail, getUndefinedDetail,
     getUserCreatedDetail, getSingleNote, getPTVHNote, deleteSingleNote, getPTVHStatus, getUserCreatedDateDetail, getUserCreatedWeekDetail,
+    lockPTVH,
 }

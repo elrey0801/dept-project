@@ -1,8 +1,24 @@
 const HOST = 'http://localhost:8888'
 
 //not implemented yet
-function lockPTVH() {
+async function lockPTVH() {
+    let date = document.getElementById('calender').value;
 
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            date: date,
+        })
+    };
+    try {
+        response = await fetch(HOST + '/api/v1/lock-ptvh', options)
+    } catch (error) {
+        console.log(error);
+    }
+    await addStatus();
 }
 
 function init_panel(date) {
@@ -22,18 +38,26 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+function createNote() {
+    console.log('test')
+}
+
+function updateNote() {
+
+}
+
 //not implemented yet
 async function save_update_button(btn_type, date) {
     let tag;
     if (btn_type == 1) {
         tag = `
-        <button id = "create-button" class="button" onclick="createNote(event)">Save</button>`
+        <button id = "create-button" class="button" onclick="createNote(event)" type="button">Save</button>`
         document.getElementById("form-btn").innerHTML = tag;
     } else {
         var { content } = await get_ptvh_note(hidden_id);
         document.getElementById('content').value = content;
         tag = `
-        <button id="update-button" class="button" onclick="updateNote(event)" hidden_id="${hidden_id}">Update</button>`;
+        <button id="update-button" class="button" onclick="updateNote(event)" hidden_id="${hidden_id}" type="button">Update</button>`;
         document.getElementById("form-btn").innerHTML = tag;
     }
 }
@@ -171,7 +195,7 @@ async function get_ptvh_status(date) {
 async function addStatus() {
     let date = document.getElementById('calender').value;
     let status = await get_ptvh_status(date);
-    let statusText = status === 1 ? '<label style="color:red;"><b>PTVH đã khóa</b></label>' : '<label><b>PTVH chưa khóa</b></label>';
+    let statusText = status === 1 ? '<label style="color:red;"><b>PTVH đã khóa</b></label>' : '<label style="color:blue;"><b>PTVH chưa khóa</b></label>';
     document.getElementById('ptvh-status').innerHTML = statusText;
 }
 document.addEventListener('DOMContentLoaded', function () { addStatus(); });
