@@ -1,11 +1,13 @@
 h1 {
     font-size: 70px;
     font-weight: 600;
-    background-image: linear-gradient(to right, #f6f1d3 .01%, #648880 5%, #293f50);
-    color: transparent;
-    background-clip: text;
+    /* background-image: linear-gradient(to right, #8ee1e7 15%, #648880 25%, #293f50); */
+    background: -webkit-linear-gradient(#eee, #368a7c);
     -webkit-background-clip: text;
-    border: 1px solid #04AA6D;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border: 1.5px solid #368a7c;
+    text-align: center;
 }
 
 body {

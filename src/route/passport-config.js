@@ -16,12 +16,17 @@ function initialize(passport, getUserName, getUserById) {
 
         try {
             if (await bcrypt.compare(password, user.password)) {
-                let logstr = '[' + new Date() + ']---' + username + '---logged in\n';
+                let logstr = `[${new Date()}] ${username} --- logged in\n`
                 console.log(logstr);
                 fs.appendFileSync("logs.txt", logstr);
                 return done(null, user);
             }
-            else return done(null, false, { message: "Wrong password" });
+            else {
+                let logstr = `[${new Date()}] ${username} --- input wrong password\n`
+                console.log(logstr);
+                fs.appendFileSync("logs.txt", logstr);
+                return done(null, false, { message: "Wrong password" });
+            }
         }
         catch (err) {
             return done(err);

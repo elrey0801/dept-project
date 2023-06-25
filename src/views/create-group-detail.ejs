@@ -16,7 +16,7 @@
         <a href="/">Home</a>
         <a href="#" class="active">Tạo công tác</a>
         <a href="/ptvh">PTVH</a>
-        <a href="/upload">Upload File</a>
+        <a href="#">Điều hành</a>
         <form action="/logout?_method=DELETE" method="POST">
             <button type="submit" class="logout-button" style="float: right;">Log Out</button>
         </form>
@@ -45,25 +45,27 @@
             </div>
             <div>
                 <label>Đơn vị: </label>
-                <input type="text" id="crew" name="crew" style='width:15%;'>
+                <input type="text" id="crew" name="crew" style='width:25rem;'>
             </div>
             <div>
                 <label>Trạm/NM: </label>
-                <input type="text" id="station" name="station" style='width:15%;'>
+                <input type="text" id="station" name="station" style='width:25rem;'>
             </div>
             <div>
-                <label>Phần tử công tác: </label>
-                <textarea type="text" id="element" name="element" wrap="soft"
-                    style='width:25rem; height:7rem; word-break: break-word'></textarea>
-            </div>
-            <div>
-                <label>Nội dung công tác: </label>
-                <textarea type="text" id="content" name="content" wrap="soft"
-                    style='width:25rem; height:7rem; word-break: break-word'></textarea>
+                <div style="display:inline-block; padding-right: 5rem">
+                    <label>Phần tử công tác: </label>
+                    <textarea type="text" id="element" name="element" wrap="soft"
+                        style='width:25rem; height:10rem; word-break: break-word'></textarea>
+                </div>
+                <div style="display:inline-block; padding-right: 5rem">
+                    <label>Nội dung công tác: </label>
+                    <textarea type="text" id="content" name="content" wrap="soft"
+                        style='width:25rem; height:10rem; word-break: break-word'></textarea>
+                </div>
             </div>
             <div>
                 <label>PTT: </label>
-                <input type="text" id="ptt" name="ptt" style='width:15%;'>
+                <input type="text" id="ptt" name="ptt" style='width:25rem;'>
             </div>
             <div id="form-btn" style="margin-top: .5rem;">
             </div>

@@ -22,6 +22,7 @@ const initAPIRoute = (app) => {
     router.get('/get-ptvh-note/:date', checkAuthenticated, APIController.getPTVHNote);
     router.put('/lock-ptvh', checkAuthenticated, APIController.lockPTVH);
     router.delete('/delete-single-note/:id', checkAuthenticated, APIController.deleteSingleNote);
+    router.post('/create-ptvh-note', checkAuthenticated, APIController.createPTVHNote);
     return app.use('/api/v1/', router);
 }
 

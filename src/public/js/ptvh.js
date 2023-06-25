@@ -1,6 +1,6 @@
 const HOST = 'http://localhost:8888'
 
-//not implemented yet
+
 async function lockPTVH() {
     let date = document.getElementById('calender').value;
 
@@ -21,11 +21,17 @@ async function lockPTVH() {
     await addStatus();
 }
 
+//not implemented yet
+function copyNote() {
+
+}
+
 function init_panel(date) {
     let panel = `<div style="display:inline-block; padding-right: 2%">
                     <label>Xem PTVH ngày: </label>
                     <input type="date" name="date" id="calender" value="${date}">
                     <button id = "ptvh-list-button" class="button" onclick="displayPTVHTable()">Xem PTVN ngày</button>
+                    <button id="ptvh-lock-button" class="button" onclick="copyNote()">Copy lưu ý ngày trước</button>
                     <button id="ptvh-lock-button" class="button" onclick="lockPTVH()">Khóa/Mở khóa</button>
                 </div>`;
 
@@ -38,8 +44,30 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-function createNote() {
-    console.log('test')
+async function createNote() {
+    let note = document.getElementById('content').value;
+    let date = document.getElementById('calender').value;
+    if (note != '') {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                date: date,
+                note: note,
+            })
+        };
+        let response;
+        try {
+            response = await fetch(HOST + '/api/v1/create-ptvh-note', options);
+            if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể thêm công tác!`);
+            else alert("Added");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else
+        alert("Chưa nhập ghi chú");
+    displayNoteTable();
 }
 
 function updateNote() {
@@ -75,7 +103,14 @@ async function displayNoteTable() {
             <table border="1" width="100%" class="w3-table-all w3-hoverable">
                 <thead>
                     <tr class="w3-light-grey">
-                        <th>Lưu ý vận hành ngày</th>
+                        <th>LƯU Ý VẬN HÀNH NGÀY</th>
+                    </tr>
+                </thead>
+            </table>
+            <table border="1" width="100%" class="w3-table-all w3-hoverable">
+                <thead>
+                    <tr class="w3-light-grey">
+                        <th>Nội dung lưu ý</th>
                         <th style="width:9%">Edit/Delete</th>
                     </tr>
                 </thead>
@@ -117,7 +152,7 @@ async function displayPTVHTable() {
                 <table border="1" width="100%" class="w3-table-all w3-hoverable">
                 <thead>
                     <tr class="w3-light-grey">
-                        <th>Lịch công tác ngày</th>
+                        <th>LỊCH CÔNG TÁC NGÀY</th>
                     </tr>
                     </thead>
                 </table>
