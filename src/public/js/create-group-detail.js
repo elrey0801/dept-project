@@ -173,7 +173,7 @@ async function displayScheduleTable() {
     let data = await get_detail(group_id);
     console.log(data);
     let table = `
-            <h2> Group List</h2>
+            <h3 style="padding-left: 15px;"> Group List</h3>
                 <table border="1" width="100%" class="w3-table-all w3-hoverable">
                     <thead>
                         <tr class="w3-light-grey">

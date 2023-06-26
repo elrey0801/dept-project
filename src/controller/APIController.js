@@ -302,7 +302,6 @@ let deleteSingleNote = async (req, res) => {
     let idNote = req.params.id;
     const user = await req.user;
     let username = user[0][0].username;
-    console.log(idNote);
     if (!idNote)
         return res.status(200).json({
             message: 'missing params',
@@ -364,14 +363,14 @@ let lockPTVH = async (req, res) => {
     let day = date[2], month = date[1], year = date[0];
 
     var [result, _] = await pool.execute('SELECT * FROM `ptvh` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
-    [day, month, year]);
+        [day, month, year]);
 
-    if(!result[0].is_locked) {
+    if (!result[0].is_locked) {
         await pool.execute('UPDATE `ptvh` SET `is_locked` = 1  WHERE `ptvh`.`id` = ?',
-    [result[0].id]);
+            [result[0].id]);
     } else {
         await pool.execute('UPDATE `ptvh` SET `is_locked` = 0  WHERE `ptvh`.`id` = ?',
-    [result[0].id]);
+            [result[0].id]);
     }
 
     let logstr = `[${new Date()}] ${username} --- modified PTVH ${req.body.date} status\n`;
@@ -411,8 +410,46 @@ let createPTVHNote = async (req, res) => {
     })
 }
 
+let updatePTVHNote = async (req, res) => {
+    const user = await req.user;
+    let username = user[0][0].username;
+
+    let date = req.body.date;
+    var [checkPTVH, _] = await pool.execute('SELECT * FROM `ptvh` WHERE (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?)\
+    AND YEAR(ptvh_date) = YEAR(?))',
+        [date, date, date]);
+
+    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+        let logstr = `[${new Date()}] ${username} --- try to edit note when PTVH ${date} is locked\n`
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
+        return res.status(406).json({
+            message: `PTVH ngày này đã khóa, không thay đổi xóa nội dung!`,
+        })
+    }
+
+    let noteId = req.body.id;
+    let note = req.body.note;
+
+    await pool.execute('UPDATE `ptvh-note` SET note = ? WHERE id = ?',
+        [note, noteId]);
+
+    let logstr = `[${new Date()}] ${username} --- updated a note with id: ${noteId}\n`;
+    console.log(logstr);
+    fs.appendFileSync("logs.txt", logstr);
+
+    return res.status(200).json({
+        message: 'update PTVH note ok',
+    })
+
+}
+
+let copyPrevDateNote = async (req, res) => {
+
+}
+
 export default {
     createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail, getDateDetail, getWeekDetail, getUndefinedDetail,
     getUserCreatedDetail, getSingleNote, getPTVHNote, deleteSingleNote, getPTVHStatus, getUserCreatedDateDetail, getUserCreatedWeekDetail,
-    lockPTVH, createPTVHNote,
+    lockPTVH, createPTVHNote, updatePTVHNote, copyPrevDateNote,
 }

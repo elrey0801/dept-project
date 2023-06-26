@@ -59,33 +59,57 @@ async function createNote() {
         let response;
         try {
             response = await fetch(HOST + '/api/v1/create-ptvh-note', options);
-            if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể thêm công tác!`);
+            if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể thêm lưu ý!`);
             else alert("Added");
         } catch (error) {
             console.log(error);
         }
     }
     else
-        alert("Chưa nhập ghi chú");
+        alert("Chưa nhập nội dung");
     displayNoteTable();
 }
 
-function updateNote() {
-
+async function updateNote(noteId) {
+    //calling udpate
+    let note = document.getElementById('content').value;
+    let date = document.getElementById('calender').value;
+    if (note != '') {
+        const options = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: noteId,
+                date: date,
+                note: note,
+            })
+        };
+        let response;
+        try {
+            response = await fetch(HOST + '/api/v1/update-ptvh-note', options);
+            if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể sửa lưu ý!`);
+            else alert("Updated");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else
+        alert("Chưa nhập nội dung");
+    displayNoteTable();
+    save_update_button(1)
 }
 
 //not implemented yet
-async function save_update_button(btn_type, date) {
+async function save_update_button(btn_type, noteId) {
     let tag;
     if (btn_type == 1) {
         tag = `
         <button id = "create-button" class="button" onclick="createNote(event)" type="button">Save</button>`
         document.getElementById("form-btn").innerHTML = tag;
     } else {
-        var { content } = await get_ptvh_note(hidden_id);
-        document.getElementById('content').value = content;
+        document.getElementById('content').value = document.getElementById(`note-${noteId}`).innerText;
         tag = `
-        <button id="update-button" class="button" onclick="updateNote(event)" hidden_id="${hidden_id}" type="button">Update</button>`;
+        <button id="update-button" class="button" onclick="updateNote(${noteId})" type="button">Update</button>`;
         document.getElementById("form-btn").innerHTML = tag;
     }
 }
@@ -122,10 +146,10 @@ async function displayNoteTable() {
     addStatus();
     for (let row of data) {
         table += `<tr>  
-                    <td style="text-align: left;">${row.note.replaceAll("\n", "<br/>")}</td>
+                    <td id='note-${row.id}' style="text-align: left;">${row.note.replaceAll("\n", "<br/>")}</td>
                     <td>
                         <div style="width: 100%;" class="div-table">
-                            <button id="edit-button-${row.id}" class="button-table" onclick="preEditNote('${row.id}')">Sửa</button>
+                            <button id="edit-button-${row.id}" class="button-table" onclick="save_update_button(2, '${row.id}')" type="button">Sửa</button>
                             <button id="delete-button-${row.id}" class="button-table" onclick="deleteNote('${row.id}')">Xóa</button>
                         </div>
                     </td>
