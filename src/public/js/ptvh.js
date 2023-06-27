@@ -3,7 +3,6 @@ const HOST = 'http://localhost:8888'
 
 async function lockPTVH() {
     let date = document.getElementById('calender').value;
-
     const options = {
         method: 'PUT',
         headers: {
@@ -19,11 +18,28 @@ async function lockPTVH() {
         console.log(error);
     }
     await addStatus();
+    await displayPTVHTable();
 }
 
 //not implemented yet
-function copyNote() {
-
+async function copyNote() {
+    let date = document.getElementById('calender').value;
+    const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            date: date,
+        })
+    };
+    let response;
+    try {
+        response = await fetch(HOST + '/api/v1/copy-prev-date-note', options);
+        if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể thêm lưu ý!`);
+        else alert("Đã chuyển các lưu ý ngày trước sang.");
+    } catch (error) {
+        console.log(error);
+    }
+    await displayPTVHTable();
 }
 
 function init_panel(date) {
@@ -67,7 +83,7 @@ async function createNote() {
     }
     else
         alert("Chưa nhập nội dung");
-    displayNoteTable();
+    await displayNoteTable();
 }
 
 async function updateNote(noteId) {
@@ -95,8 +111,8 @@ async function updateNote(noteId) {
     }
     else
         alert("Chưa nhập nội dung");
-    displayNoteTable();
-    save_update_button(1)
+    await displayNoteTable();
+    await save_update_button(1)
 }
 
 //not implemented yet
@@ -162,11 +178,12 @@ async function displayNoteTable() {
 document.addEventListener('DOMContentLoaded', function () { displayNoteTable(); });
 
 async function displayPTVHTable() {
-    displayNoteTable();
+    await displayNoteTable();
     async function get_date_detail(date) {
         let res, response;
         response = await fetch(HOST + '/api/v1/get-date-detail/' + date);
         res = await response.json();
+        console.log(res.result);
         return res.result;
     }
 
@@ -240,8 +257,8 @@ async function deleteNote(note_id) {
     } catch (error) {
         console.log(error);
     }
-    save_update_button(1);
-    displayNoteTable();
+    await save_update_button(1);
+    await displayNoteTable();
 }
 
 async function get_ptvh_status(date) {

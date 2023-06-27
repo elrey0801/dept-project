@@ -1,6 +1,7 @@
 import res from "express/lib/response.js";
 import pool from "../configs/connectDB.js";
 import fs from 'fs';
+import e from "express";
 
 let createGroup = async (req, res) => {
     const user = await req.user;
@@ -199,6 +200,45 @@ let getDateDetail = async (req, res) => {
     var [result, _] = await pool.execute('SELECT * FROM `list-ct` WHERE (DAY(schedule_start) = ? AND MONTH(schedule_start) = ?  AND YEAR(schedule_start) = ?) OR\
                                                 (DAY(schedule_finish) = ? AND MONTH(schedule_finish) = ?  AND YEAR(schedule_finish) = ?)',
         [day, month, year, day, month, year]);
+
+    var [group_id, _] = await pool.execute('SELECT DISTINCT `group_id` FROM `list-ct` WHERE (DAY(schedule_start) = ? AND MONTH(schedule_start) = ?  AND YEAR(schedule_start) = ?) OR\
+                                            (DAY(schedule_finish) = ? AND MONTH(schedule_finish) = ?  AND YEAR(schedule_finish) = ?)',
+        [day, month, year, day, month, year]);
+
+    function sortDate(ele1, ele2) {
+        if (ele1.sort_date < ele2.sort_date) return -1;
+        else if (ele1.sort_date > ele2.sort_date) return 1;
+        else return 0;
+    }
+
+    for (let ele of result) {
+        let ss_date = ele.schedule_start;
+        if (ss_date.getDate() == day && (ss_date.getMonth() + 1) == month && ss_date.getFullYear() == year)
+            ele.sort_date = ss_date;
+        else {
+            ele.schedule_start = null;
+            ele.sort_date = ele.schedule_finish;
+        }
+    }
+
+    for (let group of group_id) {
+        group.ele = [];
+        for (let ele of result) {
+            if (ele.group_id == group.group_id)
+                group.ele.push(ele);
+        }
+        group.ele.sort(sortDate);
+        group.sort_date = group.ele[0].sort_date;
+    }
+    group_id.sort(sortDate);
+    console.log(group_id);
+
+    result = [];
+    for (let group of group_id) {
+        for (let e of group.ele) {
+            result.push(e);
+        }
+    }
 
     return res.status(200).json({
         message: 'get date data ok',
@@ -445,7 +485,44 @@ let updatePTVHNote = async (req, res) => {
 }
 
 let copyPrevDateNote = async (req, res) => {
+    const user = await req.user;
+    let username = user[0][0].username;
 
+    let thisDate = req.body.date;
+    var [checkPTVH, _] = await pool.execute('SELECT * FROM `ptvh` WHERE (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?)\
+    AND YEAR(ptvh_date) = YEAR(?))',
+        [thisDate, thisDate, thisDate]);
+
+    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+        let logstr = `[${new Date()}] ${username} --- try to edit note when PTVH ${thisDate} is locked\n`
+        console.log(logstr);
+        fs.appendFileSync("logs.txt", logstr);
+        return res.status(406).json({
+            message: `PTVH ngày này đã khóa, không thay đổi nội dung!`,
+        })
+    }
+
+
+    let lastDate = new Date(req.body.date);
+    lastDate.setDate(lastDate.getDate() - 1);
+
+    let day = lastDate.getDate(), month = lastDate.getMonth() + 1, year = lastDate.getFullYear();
+
+    var [result, _] = await pool.execute('SELECT * FROM `ptvh-note` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
+        [day, month, year]);
+
+    for (let row of result) {
+        await pool.execute('INSERT INTO `ptvh-note` (`note`, `id`, `ptvh_date`) VALUES (? , NULL, ?);', [row.note, thisDate]);
+    }
+
+    let logstr = `[${new Date()}] ${username} --- copy note to date ${thisDate}\n`
+    console.log(logstr);
+    fs.appendFileSync("logs.txt", logstr);
+
+    return res.status(200).json({
+        message: 'copy PTVH note ok',
+        result: result,
+    })
 }
 
 export default {

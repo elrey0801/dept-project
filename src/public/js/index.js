@@ -31,6 +31,7 @@ async function displayScheduleTable(type) {
         else if (type == 2) response = await fetch(HOST + '/api/v1/get-usercreated-date-detail/' + date);
         else if (type == 3) response = await fetch(HOST + '/api/v1/get-usercreated-week-detail/' + date);
         res = await response.json();
+        console.log(res);
         return res.result;
     }
 
