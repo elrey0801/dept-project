@@ -111,6 +111,7 @@ async function updateNote(noteId) {
     }
     else
         alert("Chưa nhập nội dung");
+
     await displayNoteTable();
     await save_update_button(1)
 }
@@ -124,6 +125,9 @@ async function save_update_button(btn_type, noteId) {
         document.getElementById("form-btn").innerHTML = tag;
     } else {
         document.getElementById('content').value = document.getElementById(`note-${noteId}`).innerText;
+        let allrow = document.querySelectorAll(`#note-tab td`);
+        [...allrow].map((row) => row.style = 'font-weight: normal; text-align: left;')
+        document.getElementById('note-' + noteId).style = 'font-weight: bold; color: blue; text-align: left;';
         tag = `
         <button id="update-button" class="button" onclick="updateNote(${noteId})" type="button">Update</button>`;
         document.getElementById("form-btn").innerHTML = tag;
@@ -154,14 +158,14 @@ async function displayNoteTable() {
                         <th style="width:9%">Edit/Delete</th>
                     </tr>
                 </thead>
-                <tbody>`
+                <tbody id="note-tab">`
 
     let date = document.getElementById('calender').value;
 
     let data = await get_ptvh_note(date);
     addStatus();
     for (let row of data) {
-        table += `<tr>  
+        table += `<tr id="tr-${row.id}">  
                     <td id='note-${row.id}' style="text-align: left;">${row.note.replaceAll("\n", "<br/>")}</td>
                     <td>
                         <div style="width: 100%;" class="div-table">
