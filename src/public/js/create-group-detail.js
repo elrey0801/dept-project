@@ -38,34 +38,37 @@ async function updateElemnent(event) {
     var element = document.getElementById('element').value;
     var station = document.getElementById('station').value;
     var ptt = document.getElementById('ptt').value;
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            schedule_start: schedule_start,
-            schedule_finish: schedule_finish,
-            crew: crew,
-            content: content,
-            element: element,
-            station: station,
-            ptt: ptt,
-            hidden_id: hidden_id,
-        })
-    };
-    let response;
-    try {
-        response = await fetch(HOST + '/api/v1/update-single', options)
-        // .then((res) => res.json()).then(data => {
-        //     console.log(data);
-        // });
-        console.log(response)
-        if (response.status == 403) alert(`Your account don't have permission to update this content`);
-        if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể sửa công tác!`);
-    } catch (error) {
-        console.log(error);
-    }
+    if (element != '' && schedule_start != null && schedule_finish != null) {
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                schedule_start: schedule_start,
+                schedule_finish: schedule_finish,
+                crew: crew,
+                content: content,
+                element: element,
+                station: station,
+                ptt: ptt,
+                hidden_id: hidden_id,
+            })
+        };
+        let response;
+        try {
+            response = await fetch(HOST + '/api/v1/update-single', options)
+            // .then((res) => res.json()).then(data => {
+            //     console.log(data);
+            // });
+            console.log(response)
+            if (response.status == 403) alert(`Your account don't have permission to update this content`);
+            if (response.status == 406) alert(`PTVH ngày này đã khóa, không thể sửa công tác!`);
+        } catch (error) {
+            console.log(error);
+        }
+    } else
+        alert("Chưa đủ dữ liệu");
     save_update_button(1);
     displayScheduleTable();
     document.getElementById('tr-' + hidden_id).style = 'font-weight: normal;';
