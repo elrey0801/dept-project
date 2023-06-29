@@ -247,3 +247,16 @@
 [Wed Jun 28 2023 10:01:48 GMT+0700 (Indochina Time)] elrey --- updated a note with id: 36
 [Wed Jun 28 2023 10:02:30 GMT+0700 (Indochina Time)] elrey deleted a PTVH note 37
 [Wed Jun 28 2023 10:08:48 GMT+0700 (Indochina Time)] elrey --- logged in
+[Thu Jun 29 2023 23:20:21 GMT+0700 (Giờ Đông Dương)] elrey --- logged in
+[Thu Jun 29 2023 23:20:28 GMT+0700 (Giờ Đông Dương)] elrey --- updated elrey_1688055073316
+[Thu Jun 29 2023 23:20:40 GMT+0700 (Giờ Đông Dương)] elrey --- updated elrey_1688055073316
+[Thu Jun 29 2023 23:22:12 GMT+0700 (Giờ Đông Dương)] elrey --- logged in
+[Thu Jun 29 2023 23:22:17 GMT+0700 (Giờ Đông Dương)] elrey --- try to update elrey_1688055073316 when PTVH is locked
+[Thu Jun 29 2023 23:23:26 GMT+0700 (Giờ Đông Dương)] elrey --- created elrey_1688055806872
+[Thu Jun 29 2023 23:23:37 GMT+0700 (Giờ Đông Dương)] elrey --- updated elrey_1688055806872
+[Thu Jun 29 2023 23:24:16 GMT+0700 (Giờ Đông Dương)] elrey --- created elrey_1688055856325
+[Thu Jun 29 2023 23:24:41 GMT+0700 (Giờ Đông Dương)] elrey --- modified PTVH 2023-06-30 status
+[Thu Jun 29 2023 23:24:49 GMT+0700 (Giờ Đông Dương)] elrey --- try to update elrey_1688055856325 when PTVH is locked
+[Thu Jun 29 2023 23:24:54 GMT+0700 (Giờ Đông Dương)] elrey --- try to create a row when PTVH is locked
+[Thu Jun 29 2023 23:25:10 GMT+0700 (Giờ Đông Dương)] elrey --- created elrey_1688055910229
+[Thu Jun 29 2023 23:25:13 GMT+0700 (Giờ Đông Dương)] elrey --- deleted elrey_1688055910229

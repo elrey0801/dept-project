@@ -119,7 +119,7 @@ let updateSingle = async (req, res) => {
     AND YEAR(ptvh_date) = YEAR(?)) OR (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?) AND YEAR(ptvh_date) = YEAR(?))',
         [schedule_start, schedule_start, schedule_start, schedule_finish, schedule_finish, schedule_finish]);
 
-    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+    if (checkPTVH.length > 0 && (checkPTVH[0].is_locked || checkPTVH[1].is_locked)) {
         let logstr = `[${new Date()}] ${username} --- try to update ${hidden_id} when PTVH is locked\n`;
         console.log(logstr);
         fs.appendFileSync("logs.txt", logstr);
@@ -403,6 +403,13 @@ let lockPTVH = async (req, res) => {
 
     var [result, _] = await pool.execute('SELECT * FROM `ptvh` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
         [day, month, year]);
+
+    if (result.length == 0) {
+        await pool.execute('INSERT INTO `ptvh` (`ptvh_date`, `is_locked`, `id`) VALUES (? , ?, NULL);', [req.body.date, 0]);
+    }
+
+    var [result, _] = await pool.execute('SELECT * FROM `ptvh` WHERE DAY(ptvh_date) = ? AND MONTH(ptvh_date) = ?  AND YEAR(ptvh_date) = ?',
+    [day, month, year]);
 
     if (!result[0].is_locked) {
         await pool.execute('UPDATE `ptvh` SET `is_locked` = 1  WHERE `ptvh`.`id` = ?',
