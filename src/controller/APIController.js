@@ -40,7 +40,7 @@ let createGroup = async (req, res) => {
     AND YEAR(ptvh_date) = YEAR(?)) OR (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?) AND YEAR(ptvh_date) = YEAR(?))',
         [schedule_start, schedule_start, schedule_start, schedule_finish, schedule_finish, schedule_finish]);
 
-    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+    if (checkPTVH.length > 0 && (checkPTVH[0].is_locked || checkPTVH[1].is_locked)) {
         let logstr = `[${new Date()}] ${username} --- try to create a row when PTVH is locked\n`;
         console.log(logstr);
         fs.appendFileSync("logs.txt", logstr);
@@ -173,7 +173,7 @@ let deleteSingle = async (req, res) => {
     AND YEAR(ptvh_date) = YEAR(?)) OR (DAY(ptvh_date) = DAY(?) AND MONTH(ptvh_date) = MONTH(?) AND YEAR(ptvh_date) = YEAR(?))',
         [schedule_start, schedule_start, schedule_start, schedule_finish, schedule_finish, schedule_finish]);
 
-    if (checkPTVH.length > 0 && checkPTVH[0].is_locked) {
+    if (checkPTVH.length > 0 && (checkPTVH[0].is_locked || checkPTVH[1].is_locked)) {
         let logstr = `[${new Date()}] ${username} --- try to delete ${hidden_id} when PTVH is locked\n`;
         console.log(logstr);
         fs.appendFileSync("logs.txt", logstr);
