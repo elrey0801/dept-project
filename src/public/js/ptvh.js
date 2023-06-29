@@ -1,4 +1,4 @@
-const HOST = 'https://elrey0801.tech/'
+const HOST = 'https://elrey0801.tech'
 
 
 async function lockPTVH() {
