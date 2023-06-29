@@ -231,7 +231,6 @@ let getDateDetail = async (req, res) => {
         group.sort_date = group.ele[0].sort_date;
     }
     group_id.sort(sortDate);
-    console.log(group_id);
 
     result = [];
     for (let group of group_id) {
