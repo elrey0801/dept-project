@@ -1,4 +1,4 @@
-const HOST = 'https://elrey0801.tech'
+const HOST = 'http://localhost:8888'
 
 
 async function lockPTVH() {
