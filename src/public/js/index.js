@@ -3,7 +3,8 @@ let current_view = 0;
 
 function init_panel() {
     let today = new Date();
-    today = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, "0") + '-' + today.getDate();
+    today = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, "0")
+        + '-' + String(today.getDate()).padStart(2, "0");
     let panel = `<div style="display:inline-block; padding-right: 2%">
                     <label>Xem lịch ngày: </label>
                     <input type="date" name="date" id="calender" value="${today}">

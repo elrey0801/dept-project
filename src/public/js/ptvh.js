@@ -55,7 +55,8 @@ function init_panel(date) {
 }
 document.addEventListener('DOMContentLoaded', function () {
     let today = new Date();
-    today = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, "0") + '-' + today.getDate();
+    today = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, "0")
+        + '-' + String(today.getDate()).padStart(2, "0");
     init_panel(today);
 });
 
