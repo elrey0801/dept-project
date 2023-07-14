@@ -31,6 +31,13 @@ let getPTVH = async (req, res) => {
     return res.render('ptvh.ejs', { userId: username, results: rows });
 }
 
+let getOPData = async (req, res) => {
+    const userId = await req.user;
+    const username = userId[0][0].username;
+    const [rows, fields] = await pool.execute('SELECT * FROM `users`');
+
+    return res.render('opData.ejs', { userId: username, results: rows });
+}
 
 let getUploadFilePage = async (req, res) => {
     return res.render('uploadFile.ejs');
@@ -93,5 +100,5 @@ let runPython = (req, res) => {
 }
 
 export default {
-    getHomepage, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail, getPTVH
+    getHomepage, getUploadFilePage, handleUploadFile, handleUploadMultiFiles, runPython, getCreateGroupDetail, getPTVH, getOPData,
 }

@@ -531,8 +531,13 @@ let copyPrevDateNote = async (req, res) => {
     })
 }
 
+let uploadOPData = (req, res) => {
+    const HASH_CODE = "47875ebfcab04543a770f93401ee9340f012a890";
+    
+}
+
 export default {
     createGroup, getGroupDetail, updateSingle, deleteSingle, getSingleDetail, getDateDetail, getWeekDetail, getUndefinedDetail,
     getUserCreatedDetail, getSingleNote, getPTVHNote, deleteSingleNote, getPTVHStatus, getUserCreatedDateDetail, getUserCreatedWeekDetail,
-    lockPTVH, createPTVHNote, updatePTVHNote, copyPrevDateNote,
+    lockPTVH, createPTVHNote, updatePTVHNote, copyPrevDateNote, uploadOPData, 
 }

@@ -16,7 +16,7 @@ let router = express.Router();
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         //cb(null, "E:/dev/node/learning_basic/src/public/img");
-        cb(null, appRoot + "/src/public/img");
+        cb(null, appRoot + "/src/public/xlsx");
     },
 
     // By default, multer removes file extensions so let's add them back
@@ -25,22 +25,23 @@ const storage = multer.diskStorage({
     }
 });
 
-const imageFilter = function (req, file, cb) {
+const xlsxFilter = function (req, file, cb) {
     // Accept images only
-    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-        req.fileValidationError = 'Only image files are allowed!';
-        return cb(new Error('Only image files are allowed!'), false);
+    if (!file.originalname.match(/\.(xlsx|XLSX|xls|XLS)$/)) {
+        req.fileValidationError = 'Only EXCEL files are allowed!';
+        return cb(new Error('Only EXCEL files are allowed!'), false);
     }
     cb(null, true);
 };
 
-let upload = multer({ storage: storage, fileFilter: imageFilter });
-let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter });
+let upload = multer({ storage: storage, fileFilter: xlsxFilter });
+let uploadMultipleFiles = multer({ storage: storage, fileFilter: xlsxFilter });
 
 const initWebRoute = (app) => {
     router.get('/', checkAuthenticated, homeController.getHomepage);
     router.get('/create-group-detail/:id', checkAuthenticated, homeController.getCreateGroupDetail);
     router.get('/ptvh', checkAuthenticated, homeController.getPTVH);
+    router.get('/op-data', checkAuthenticated, homeController.getOPData);
 
     router.get('/python', homeController.runPython);
 

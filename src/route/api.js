@@ -8,7 +8,7 @@ const initAPIRoute = (app) => {
     router.get('/get-group-detail/:group_id', checkAuthenticated, APIController.getGroupDetail);
     router.get('/get-date-detail/:date', checkAuthenticated, APIController.getDateDetail);
     router.get('/get-week-detail/:date', checkAuthenticated, APIController.getWeekDetail);
-    router.get('/get-undefined-detail', checkAuthenticated, APIController.getUndefinedDetail);
+    router.get('/get-undefined-detail',  APIController.getUndefinedDetail);
     router.get('/get-usercreated-detail', checkAuthenticated, APIController.getUserCreatedDetail);
     router.get('/get-usercreated-date-detail/:date', checkAuthenticated, APIController.getUserCreatedDateDetail);
     router.get('/get-usercreated-week-detail/:date', checkAuthenticated, APIController.getUserCreatedWeekDetail);
@@ -25,6 +25,7 @@ const initAPIRoute = (app) => {
     router.post('/create-ptvh-note', checkAuthenticated, APIController.createPTVHNote);
     router.put('/update-ptvh-note', checkAuthenticated, APIController.updatePTVHNote);
     router.post('/copy-prev-date-note', checkAuthenticated, APIController.copyPrevDateNote);
+    router.post('/upload-opdata', APIController.uploadOPData);
     return app.use('/api/v1/', router);
 }
 

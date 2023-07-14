@@ -14,8 +14,8 @@
     <div class="topnav">
         <a href="/">Home</a>
         <a href="/create-group-detail/0">Tạo công tác</a>
-        <a href="#" class="active">PTVH</a>
-        <a href="/op-data">TSVH</a>
+        <a href="/ptvh">PTVH</a>
+        <a href="#" class="active">TSVH</a>
         <form action="/logout?_method=DELETE" method="POST">
             <button type="submit" class="logout-button" style="float: right;">Log Out</button>
         </form>
@@ -23,25 +23,12 @@
             <%=userId %>
         </a>
     </div>
-    <h1>PTVH</h1>
-    <div id="ptvh-status" class="date-list-container"></div>
+    <h1>THÔNG SỐ VẬN HÀNH</h1>
     <div id="date-list-container" class="date-list-container"> </div>
-    <div class="create-group-container">
-        <form id="create-group-detail-form" action="/create-group-detail" method="POST">
-            <div><b>Thêm lưu ý vận hành: </b></div>
-            <div>
-                <label>Nội dung: </label>
-                <textarea type="text" id="content" name="content" wrap="soft"
-                    style='width:75rem; height:5rem; word-break: break-word'></textarea>
-            </div>
-            <div id="form-btn" style="margin-top: .5rem;">
-            </div>
-        </form>
-    </div>
-    <div id="note-ct-container"> </div>
     <div id="list-ct-container"> </div>
-    <script src="/js/ptvh.js"></script>
+    <script src="/js/index.js"></script>
 
     <img src="/img/tran.jpg" width="50%" class="center" />
 </body>
+
 </html>
